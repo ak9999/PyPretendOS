@@ -4,12 +4,13 @@ The System class contains information like how many of each piece of hardware
 """
 
 
-class System:
+class PretendSystem:
     def __init__(self):
         self.disks = 0
         self.printers = 0
         self.disc_drives = 0
         self.CPUs = 1  # For now we assume there is only one CPU.
+        self.sysgen() # Call sysgen upon construction
 
     '''
     get_num_disks: asks whoever is installing the system for the # of disks.

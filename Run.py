@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 
-from System import System
+from PretendSystem import PretendSystem as pos
 
-s = System()
-s.sysgen()
+totally_real_system = pos()  # Construct system!
