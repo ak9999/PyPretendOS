@@ -76,4 +76,5 @@ class System:
         self.get_num_disks()
         self.get_num_printers()
         self.get_num_cdrw()
+
         return
