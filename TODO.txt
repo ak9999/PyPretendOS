@@ -1,0 +1,4 @@
+TODO.txt
+
+* Need to clean up directory on OS exit.
+	* Remove __pycache__ directory.
