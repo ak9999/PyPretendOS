@@ -45,7 +45,7 @@ class ReadyQueue(object):
         print("Ready Queue")
         for blocks in self.rq:
             print("%s\t %s\t %s\t %s\t %s\t"
-                   % (str(blocks.get_PID()),
+                   % (str(blocks.get_pid()),
                       str(blocks.get_filename()),
                       str(blocks.get_memstart()),
                       str(blocks.get_rw()),

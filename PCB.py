@@ -25,7 +25,7 @@ class ProcessControlBlock:
         self.file = None
         self.file_length = None
 
-    def get_PID(self):
+    def get_pid(self):
         return self.pid
 
     def get_state(self):
@@ -49,7 +49,7 @@ class ProcessControlBlock:
     def set_memstart(self):
         self.memstart = random.randint(100, 32000)
 
-    def set_PID(self):
+    def set_pid(self):
         self.pid = random.randint(2, 300)
 
     def set_rw(self, operation):
