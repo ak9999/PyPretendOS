@@ -6,6 +6,18 @@ The PretendSystem class contains information like how many of each piece of
 hardware (CPUs, printers, hard disks, CD/RW drives) are available.
 """
 
+
+"""
+cleanup() is needed because Python compiles imported files to bytecode and caches them.
+These .pyc files are stored in __pycache__, we can just ignore them.
+"""
+def cleanup():  # Clean up the pycache
+    import shutil
+    try:
+        shutil.rmtree("__pycache__")
+    except FileNotFoundError:
+        print("Failed to remove __pycache__ directory")
+
 class PretendSystem:
     def __init__(self):
         self.disks = 0
