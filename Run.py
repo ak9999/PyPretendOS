@@ -10,3 +10,5 @@ Build instructions: Make sure Run.py is executable and run it.
 from PretendSystem import PretendSystem as pos
 
 totally_real_system = pos()  # Construct system!
+print()
+totally_real_system.printsys()

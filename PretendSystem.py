@@ -23,7 +23,6 @@ class PretendSystem:
         except ValueError:
             print("Error, try again.")
             self.get_num_disks()
-            exit()  # Exit program
         except KeyboardInterrupt:
             print()
             exit()  # If Ctrl-C, just exit.
@@ -41,7 +40,6 @@ class PretendSystem:
         except ValueError:
             print("Error, try again.")
             self.get_num_printers()
-            exit()  # Exit program
         except KeyboardInterrupt:
             print()
             exit()  # If Ctrl-C, just exit.
@@ -56,7 +54,6 @@ class PretendSystem:
         except ValueError:
             print("Error, try again.")
             self.get_num_cdrw()
-            exit()  # Exit program
         except KeyboardInterrupt:
             print()
             exit()  # If Ctrl-C, just exit.
@@ -75,4 +72,8 @@ class PretendSystem:
         self.get_num_printers()
         self.get_num_cdrw()
 
-        return
+    def printsys(self):
+        print("# CPUs:", self.CPUs)
+        print("# disks:", self.disks)
+        print("# printers:", self.printers)
+        print("# CDRW drives:", self.disc_drives)
