@@ -10,12 +10,13 @@ class PretendSystem:
         self.printers = 0
         self.disc_drives = 0
         self.CPUs = 1  # For now we assume there is only one CPU.
-        self.sysgen() # Call sysgen upon construction
+        self.sysgen()  # Call sysgen upon construction
 
     '''
     get_num_disks: asks whoever is installing the system for the # of disks.
     If they input anything but a number, they will be prompted again.
     '''
+
     def get_num_disks(self):
         print("Enter the number of disks:", end=' ')
         try:
@@ -33,6 +34,7 @@ class PretendSystem:
     '''
     get_num_printers: same thing but for printers
     '''
+
     def get_num_printers(self):
         print("Enter the number of printers:", end=' ')
         try:
@@ -65,6 +67,7 @@ class PretendSystem:
     This is the sysgen function, where I ask how many of each piece of hardware
     there is. For now I assume there is only ONE CPU.
     '''
+
     def sysgen(self):
         print("Welcome to Totally Not UNIX!", end='\n')
         print()
