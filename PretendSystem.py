@@ -1,8 +1,10 @@
 """
-The System class contains information like how many of each piece of hardware
-(CPUs, printers, hard disks, CD/RW drives) are available.
+Author: Abdullah Khan
+File: PretendSystem.py
+Description:
+The PretendSystem class contains information like how many of each piece of
+hardware (CPUs, printers, hard disks, CD/RW drives) are available.
 """
-
 
 class PretendSystem:
     def __init__(self):
@@ -10,7 +12,8 @@ class PretendSystem:
         self.printers = 0
         self.disc_drives = 0
         self.CPUs = 1  # For now we assume there is only one CPU.
-        self.sysgen()  # Call sysgen upon construction
+        self.num_processes = 0
+        self.sys_gen()  # Call sys_gen upon construction
 
     '''
     get_num_disks: asks whoever is installing the system for the # of disks.
@@ -68,7 +71,7 @@ class PretendSystem:
     there is. For now I assume there is only ONE CPU.
     '''
 
-    def sysgen(self):
+    def sys_gen(self):
         print("Welcome to Totally Not UNIX!", end='\n')
         print()
         self.get_num_disks()
