@@ -86,6 +86,7 @@ class PretendSystem:
     def sys_gen(self):
         print("Welcome to Totally Not UNIX!", end='\n')
         print()
+        print("Starting setup...", end="\n")
         self.get_num_disks()
         self.get_num_printers()
         self.get_num_cdrw()
