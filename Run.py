@@ -17,7 +17,7 @@ def leave():
 
 def running_mode():
     while True:
-        print("C:\\", end=" ")
+        print("C:\\>", end=" ")
         try:
             command = input()
         except KeyboardInterrupt:
@@ -25,12 +25,17 @@ def running_mode():
         except EOFError:
             leave()
 
+        if valid_signal(command):
+        	signal(command)
+        else:
+        	running_mode()
+
 
 from PCB import ProcessControlBlock as pcb
 from PretendSystem import cleanup
 from Signals import *
 
-totally_real_system = pos()
+#totally_real_system = pos()
 print()
 running_mode()
 

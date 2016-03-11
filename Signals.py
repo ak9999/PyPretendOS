@@ -6,12 +6,18 @@ Description: Handles making sure system calls and interrupts are valid.
 
 import re
 import DeviceQueue
-import ReadyQueue
+from ReadyQueue import *
+from PretendSystem import cleanup
 
-def terminate(cpu):
-    cpu.remove()
+def leave():
+    print()
+    cleanup()
+    exit()
 
-def arrival(cpu):
+def terminate(rq):
+    rq.remove()
+
+def arrival(rq):
     cpu.add()
 
 def signal(letter):
@@ -19,12 +25,16 @@ def signal(letter):
     Python does not have switch/cases like C++, but we can
     use dictionaries to mimic that functionality.
     """
-    switch_case = \
-        {
-            "A": arrival(cpu),  # put PCB into ready queue
-            "S": snapshot(cpu),
-            "t": terminate(cpu)
-        }
+    try:
+        switch_case = \
+            {
+                "A": arrival(),  # put PCB into ready queue
+                "S": snapshot(),
+                "t": terminate()
+            }
+    except TypeError:
+        print("You broke it.")
+        leave()
 
     #  Get function from the switch_case dictionary
     function = switch_case.get(letter)
