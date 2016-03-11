@@ -12,7 +12,6 @@ from PretendSystem import cleanup
 
 totally_real_system = pos()  # Construct system!
 print()
-totally_real_system.printsys()
 
 # Clean up the pycache
 cleanup()

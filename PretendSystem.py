@@ -37,7 +37,7 @@ class PretendSystem:
         print("Enter the number of disks:", end=' ')
         try:
             self.disks = int(input())
-            if self.disks <= 0 or self.disks >= 10:
+            if self.disks <= 0 or self.disks > 10:
                 print("Must be between 1 and 10.")
                 self.get_num_disks()
         except ValueError:
@@ -60,7 +60,7 @@ class PretendSystem:
         print("Enter the number of printers:", end=' ')
         try:
             self.printers = int(input())
-            if self.printers <= 0 or self.printers >= 10:
+            if self.printers <= 0 or self.printers > 10:
                 print("Must be between 1 and 10.")
                 self.get_num_printers()
         except ValueError:
@@ -79,7 +79,7 @@ class PretendSystem:
         print("Enter the number of CD/RW drives:", end=' ')
         try:
             self.disc_drives = int(input())
-            if self.disc_drives <= 0 or self.disc_drives >= 10:
+            if self.disc_drives <= 0 or self.disc_drives > 10:
                 print("Must be between 1 and 10.")
                 self.get_num_cdrw()
         except ValueError:

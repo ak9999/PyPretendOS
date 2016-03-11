@@ -24,15 +24,21 @@ class ReadyQueue(object):
         self.rq = deque()  # Just make a deque.
 
     def add(self, other):
-        other.set_state("READY")  # Set process state
+        #other.set_state("READY")  # Set process state
         self.rq.append(other)  # Now we can add it!
 
+    def is_empty(self):
+        if self.rq: #  If the deque is not empty
+            return False
+        else:
+            return True
+
     def remove(self):
-        if self.rq:
+        if self.is_empty():
             print("No processes to remove!", end="\n")
         else:
             try:  # We should only ever need to try once.
-                self.rq.popleft()
+                return self.rq.popleft()
             except IndexError:  # We have a serious problem if this happens.
                 print("No processes to remove from queue???", end="\n")
 
@@ -43,11 +49,15 @@ class ReadyQueue(object):
     """
     def __str__(self):
         print("Ready Queue")
+        print()
         for blocks in self.rq:
-            print("%s\t %s\t %s\t %s\t %s\t"
-                   % (str(blocks.get_pid()),
-                      str(blocks.get_filename()),
-                      str(blocks.get_memstart()),
-                      str(blocks.get_rw()),
-                      str(blocks.get_filelength()))
-                 )
+            print \
+            ("%s\t %s\t %s\t %s\t %s\t"
+             %  ( \
+                str(blocks.get_pid()),
+                str(blocks.get_filename()),
+                str(blocks.get_memstart()),
+                str(blocks.get_rw()),
+                str(blocks.get_filelength())
+                )
+            )

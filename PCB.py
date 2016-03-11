@@ -8,8 +8,9 @@ The PCB includes:
     memory address, etc.
 """
 
-import random # to generate memory address
+import random  # to generate memory address
 import re  # regex for matching strings
+from PretendSystem import cleanup
 
 """
 PCB class definiton.
@@ -19,10 +20,10 @@ PCB class definiton.
 class ProcessControlBlock:
     def __init__(self):
         self.pid = None
-        self.state = None
+        #self.state = None
         self.memstart = None
         self.rw = None
-        self.file = None
+        self.filename = None
         self.file_length = None
 
     def get_pid(self):
@@ -35,7 +36,7 @@ class ProcessControlBlock:
         return self.memstart
 
     def get_filename(self):
-        return self.file
+        return self.filename
 
     def get_file_length(self):
         return self.file_length
@@ -54,3 +55,31 @@ class ProcessControlBlock:
 
     def set_rw(self, operation):
         return  # come back later and add the regex stuff
+
+    def set_file_length(self):
+        print("File length: ", end=" ")
+        try:
+            file_length = int(input())
+        except ValueError:
+            print("Error, try again.")
+            self.set_file_length()
+        except KeyboardInterrupt:
+            print()
+            cleanup()
+            exit()
+        except EOFError:
+            print()
+            cleanup()
+            exit()
+
+    def set_file_name(self):
+        print("File name: ", end=" ")
+        self.filename = input()
+
+
+def create_block(block):
+    block.set_file_name()
+    block.set_file_length()
+    block.memstart()
+    block.set_pid()
+    block.set_rw()

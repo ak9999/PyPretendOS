@@ -7,22 +7,32 @@ Description: CPU class implementation
 from collections import deque
 from ReadyQueue import ReadyQueue
 
-class CPU:
+class CPU(ReadyQueue):
+    """
+    CPUs can only have one job at a time.
+    I want to be able to move PCBs from the ready queue to the CPU.
+    """
     def __init__(self):
         self.cpu = deque(maxlen=1) # CPUs can only work on one process!
         self.rq = ReadyQueue()
 
     def is_empty(self):
-        if self.cpu: # If the CPU is not in use:
-            return True
-        else:
+        if self.cpu: # If the CPU is in use
             return False
-
-    def enqueue(self, other):
-        self.cpu.append(other)
-
-    def terminate(self):
-        if self.cpu:
-            print("No process to terminate!", end="\n")
         else:
-            self.cpu.clear()
+            return True
+
+    def add(self, other):
+        if self.is_empty:
+            self.cpu.append(self.rq.remove())
+        else:
+            self.rq.add(other)
+
+    def remove(self):
+        if self.is_empty():
+            print("Nothing to remove!", end="\n")
+        else:
+            self.cpu.pop()
+            if self.rq.is_empty():
+                print("No more processes in queue.", end="\n")
+                self.add(self.rq.remove())
