@@ -36,6 +36,9 @@ class PretendSystem:
         print("Enter the number of disks:", end=' ')
         try:
             self.disks = int(input())
+            if self.disks <= 0:
+                print("Can't have less than one.")
+                self.get_num_disks()
         except ValueError:
             print("Error, try again.")
             self.get_num_disks()
@@ -54,6 +57,9 @@ class PretendSystem:
         print("Enter the number of printers:", end=' ')
         try:
             self.printers = int(input())
+            if self.printers <= 0:
+                print("Can't have less than one.")
+                self.get_num_printers()
         except ValueError:
             print("Error, try again.")
             self.get_num_printers()
@@ -68,6 +74,9 @@ class PretendSystem:
         print("Enter the number of CD/RW drives:", end=' ')
         try:
             self.disc_drives = int(input())
+            if self.disc_drives <= 0:
+                print("Can't have less than one.")
+                self.get_num_cdrw()
         except ValueError:
             print("Error, try again.")
             self.get_num_cdrw()
