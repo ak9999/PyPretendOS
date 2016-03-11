@@ -41,7 +41,6 @@ def signal(letter, rq):
     }
 
     try:
-
         if letter in switch_case:
             #  Get function from the switch_case dictionary
             function = switch_case.get(letter)
