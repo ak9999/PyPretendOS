@@ -8,41 +8,54 @@ import re
 import DeviceQueue
 from ReadyQueue import *
 from PretendSystem import cleanup
+from PCB import ProcessControlBlock as PCB
 
 def leave():
     print()
     cleanup()
     exit()
 
+def snapshot(rq):
+    rq.print_queue()
+    return
+
 def terminate(rq):
     rq.remove()
+    return
 
 def arrival(rq):
-    cpu.add()
+    pcb = PCB()
+    rq.add(pcb)
+    return
 
-def signal(letter):
+def signal(letter, rq):
     """
     Python does not have switch/cases like C++, but we can
     use dictionaries to mimic that functionality.
     """
+    switch_case = \
+    {
+        "A": arrival,  # put PCB into ready queue
+        "S": snapshot,
+        "t": terminate
+    }
+
     try:
-        switch_case = \
-            {
-                "A": arrival(),  # put PCB into ready queue
-                "S": snapshot(),
-                "t": terminate()
-            }
+
+        if letter in switch_case:
+            #  Get function from the switch_case dictionary
+            function = switch_case.get(letter)
+        else:
+            print("Bad input.")
+            return
     except TypeError:
         print("You broke it.")
         leave()
 
-    #  Get function from the switch_case dictionary
-    function = switch_case.get(letter)
-
-    return function(cpu)  # Return the function and execute it.
+    return function(rq)  # Return the function and execute it.
 
 
-def snap_signal(letter):
+def snap_signal(letter, dq):
     switch_case = \
         {
             #  Print respective queues, where dq is a device queue
@@ -57,7 +70,7 @@ def snap_signal(letter):
 
     return function()  # Return the function and execute it.
 
-def complete_signal(dq, pattern):
+def complete_signal(pattern, dq):
     switch_case = \
         {
             #  Print respective queues
