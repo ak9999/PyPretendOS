@@ -28,24 +28,26 @@ def system_call(cpu, call):
         if(call[0] == "p"):
             cpu.to_printer()
 
-def signal(letter):
+
+def signal(letter, cpu):
     """
     Python does not have switch/cases like C++, but we can
     use dictionaries to mimic that functionality.
     """
     switch_case = \
         {
-            "A" : arrival(), #  put PCB into ready queue
-            "S" : snapshot(),
-            "t" : terminate()
+            "A": arrival(cpu),  # put PCB into ready queue
+            "S": snapshot(cpu),
+            "t": terminate(cpu)
         }
 
     #  Get function from the switch_case dictionary
     function = switch_case.get(letter)
 
-    return function()  # Return the function and execute it.
+    return function(cpu)  # Return the function and execute it.
 
-def snap_signal(letter, dq):
+
+def snap_signal(letter):
     switch_case = \
         {
             #  Print respective queues, where dq is a device queue
@@ -70,7 +72,7 @@ def complete_signal(dq, pattern):
         }
 
     #  Get function from the switch_case dictionary
-    function = switch_case.get(letter)
+    function = switch_case.get(pattern)
 
     return function()  # Return the function and execute it.
 
@@ -86,12 +88,6 @@ def valid_device(pattern):
     Return whether the pattern is a valid device
     """
     return re.compile(r"^[cdp][0-9]{1}$").match(pattern) is not None
-
-def valid_complete(pattern):
-    """
-    Return whether the pattern is a valid device
-    """
-    return re.compile(r"^[CDP][0-9]{1}$").match(pattern) is not None
 
 def valid_snapshot(pattern):
     return re.compile(r"^[cdpr]{1}$").match(pattern) is not None
