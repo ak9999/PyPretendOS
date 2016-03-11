@@ -107,8 +107,11 @@ class PretendSystem:
         self.get_num_printers()
         self.get_num_cdrw()
 
-    def print_sys(self):
-        print("# CPUs:", self.CPUs)
-        print("# disks:", self.disks)
-        print("# printers:", self.printers)
-        print("# CDRW drives:", self.disc_drives)
+    def __str__(self):
+        representation = ""
+        representation += "# CPUs: " + str(self.CPUs) + "\n" \
+            + "# disks: " + str(self.disks) + "\n" \
+            + "# printers: " + str(self.printers) + "\n" \
+            + "# CDRW drives: " + str(self.disc_drives)
+        return representation
+
