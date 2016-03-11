@@ -119,8 +119,14 @@ def snapshot_mode(q):
         if valid_signal(command):
             if command[0] == "r":
                 q.print_queue()
+            elif command[0] == "c":
+                return  #  Gotta add device queues
+            elif command[0] == "d":
+                return  #  Gotta add device queues
+            elif command[0] == "p":
+                return  #  Gotta add device queues
             else:
-                #  device queues
+                #  Go back to prompt
                 return
 
         else:
