@@ -8,10 +8,9 @@ Build instructions: Make sure Run.py is executable and run it.
 """
 
 from PretendSystem import PretendSystem as pos
-from PretendSystem import cleanup
 
 totally_real_system = pos()  # Construct system!
 print()
 
-# Clean up the pycache
-cleanup()
+while True:
+    print("#: ", end=" ")

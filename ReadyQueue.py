@@ -22,25 +22,35 @@ of the file like you would do in other languages like C and C++.
 class ReadyQueue(object):
     def __init__(self):
         self.rq = deque()  # Just make a deque.
+        self.cpu = self.rq[0]
 
     def add(self, other):
         #other.set_state("READY")  # Set process state
         self.rq.append(other)  # Now we can add it!
 
-    def is_empty(self):
+    def queue_is_empty(self):
         if self.rq: #  If the deque is not empty
             return False
         else:
             return True
 
+    def cpu_is_empty(self):
+        if self.cpu: #  If the deque is not empty
+            return False
+        else:
+            return True
+
     def remove(self):
-        if self.is_empty():
-            print("No processes to remove!", end="\n")
+        if self.cpu_is_empty() and not self.queue_is_empty():
+            try:
+                self.cpu = self.rq[0]
+            except IndexError:
+                print("No processes to add!", end="\n")
         else:
             try:  # We should only ever need to try once.
-                return self.rq.popleft()
+                self.cpu = self.rq.popleft()
             except IndexError:  # We have a serious problem if this happens.
-                print("No processes to remove from queue???", end="\n")
+                print("No processes!", end="\n")
 
     """
     __str__: a standard function provided by Python to convert an object to
@@ -53,7 +63,7 @@ class ReadyQueue(object):
         for blocks in self.rq:
             print \
             ("%s\t %s\t %s\t %s\t %s\t"
-             %  ( \
+             %  (
                 str(blocks.get_pid()),
                 str(blocks.get_filename()),
                 str(blocks.get_memstart()),

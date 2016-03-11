@@ -9,7 +9,6 @@ The PCB includes:
 """
 
 import random  # to generate memory address
-import re  # regex for matching strings
 from PretendSystem import cleanup
 
 """
@@ -20,7 +19,6 @@ PCB class definiton.
 class ProcessControlBlock:
     def __init__(self):
         self.pid = None
-        #self.state = None
         self.memstart = None
         self.rw = None
         self.filename = None
@@ -28,9 +26,6 @@ class ProcessControlBlock:
 
     def get_pid(self):
         return self.pid
-
-    def get_state(self):
-        return self.state
 
     def get_memstart(self):
         return self.memstart
@@ -43,9 +38,6 @@ class ProcessControlBlock:
 
     def get_rw(self):
         return self.rw
-
-    def set_state(self, new_state):
-        self.state = new_state
 
     def set_memstart(self):
         self.memstart = random.randint(100, 32000)
@@ -82,4 +74,3 @@ def create_block(block):
     block.set_file_length()
     block.memstart()
     block.set_pid()
-    block.set_rw()
