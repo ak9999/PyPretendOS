@@ -15,6 +15,7 @@ class DeviceQueue(object):
     def __init__(self):
         self.q = deque()
         self.number = None
+        self.device_name = None
 
     def add(self, block):  #  Add Process Control Blocks to queue.
         self.q.append(block)
@@ -32,17 +33,21 @@ class DeviceQueue(object):
         print("Task completed.")
         self.remove()
 
-    def __str__(self):
-        print("%s" % self.device, end="\n")
-
+    def print_device_queue(self):
+        representation = ""
         for block in self.q:
-            print("%s\t %s\t %s\t %s\t %s\t"
-                   % (str(block.get_pid()),
-                      str(block.get_filename()),
-                      str(block.get_memstart()),
-                      str(block.get_rw()),
-                      str(block.get_filelength()))
-                 )
+            representation += ("%s\t %s\t %s\t %s\t %s\t"
+                               % (str(block.get_pid()),
+                                  str(block.get_filename()),
+                                  str(block.get_memstart()),
+                                  str(block.get_rw()),
+                                  str(block.get_filelength()))
+                               )
+        return representation
+
+    def __str__(self):
+        print("%s" % self.device_name, end="\n")
+        self.print_device_queue()
 
 
 class DiscQueue(DeviceQueue):
