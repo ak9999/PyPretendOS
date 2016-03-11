@@ -22,33 +22,42 @@ of the file like you would do in other languages like C and C++.
 class ReadyQueue(object):
     def __init__(self):
         self.rq = deque()  # Just make a deque.
-        self.cpu = self.rq[0]
-
-    def add(self, other):
-        #other.set_state("READY")  # Set process state
-        self.rq.append(other)  # Now we can add it!
+        self.cpu = deque(maxlen=1)
 
     def queue_is_empty(self):
-        if self.rq: #  If the deque is not empty
+        if self.rq:  # If the deque is not empty
             return False
         else:
             return True
 
     def cpu_is_empty(self):
-        if self.cpu: #  If the deque is not empty
+        if self.cpu:  # If the deque is not empty
             return False
         else:
             return True
 
+    def add(self, other=None):
+        #other.set_state("READY")  # Set process state
+        if not self.cpu:
+            try:
+                self.cpu.append(self.rq.popleft())
+            except IndexError:
+                print("Nothing to add!")
+        else:
+            if other == None:
+                return
+            else:
+                self.rq.append(other)
+
     def remove(self):
         if self.cpu_is_empty() and not self.queue_is_empty():
             try:
-                self.cpu = self.rq[0]
+                self.cpu.append(self.rq.popleft())
             except IndexError:
                 print("No processes to add!", end="\n")
         else:
             try:  # We should only ever need to try once.
-                self.cpu = self.rq.popleft()
+                self.cpu.pop()
             except IndexError:  # We have a serious problem if this happens.
                 print("No processes!", end="\n")
 
@@ -71,3 +80,4 @@ class ReadyQueue(object):
                 str(blocks.get_filelength())
                 )
             )
+        return
