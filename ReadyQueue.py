@@ -13,15 +13,10 @@ The left side is the 'front' of the queue.
 In the C++ STL they just call it 'front' and 'back' like normal human beings.
 """
 
-"""
-ReadyQueue has to take an `object` parameter, so that it can handle the PCBs.
-Surprisingly, I don't have to include the ProcessControlBlock class at the top
-of the file like you would do in other languages like C and C++.
-"""
-
 class ReadyQueue(object):
     def __init__(self):
         self.rq = deque()  # Just make a deque.
+        self.size = 0
         self.cpu = deque(maxlen=1)
 
     def queue_is_empty(self):
@@ -37,47 +32,35 @@ class ReadyQueue(object):
             return True
 
     def add(self, other=None):
-        #other.set_state("READY")  # Set process state
-        if not self.cpu:
-            try:
-                self.cpu.append(self.rq.popleft())
-            except IndexError:
-                print("Nothing to add!")
+        if not other == None:
+            self.rq.append(other)
+            self.size += 1
         else:
-            if other == None:
-                return
-            else:
-                self.rq.append(other)
+            print("Nothing was added.")
+        if self.cpu_is_empty():
+            try:
+                self.cpu.append(self.rq[0])
+                self.rq.popleft()
+            except IndexError:
+                print("ReadyQueue is empty.")
 
     def remove(self):
         if self.cpu_is_empty() and not self.queue_is_empty():
             try:
-                self.cpu.append(self.rq.popleft())
+                self.cpu.append(self.rq[0])
+                self.rq.popleft()
+                self.size -= 1
             except IndexError:
                 print("No processes to add!", end="\n")
         else:
             try:  # We should only ever need to try once.
                 self.cpu.pop()
+                self.size -= 1
             except IndexError:  # We have a serious problem if this happens.
                 print("No processes!", end="\n")
 
-    """
-    __str__: a standard function provided by Python to convert an object to
-    a string for printing.
-    I'm using this so that I can just call print(ReadyQueue)
-    """
-    def __str__(self):
+    def print_queue(self):
         print("Ready Queue")
-        print()
+        print("PID\t Filename\t\t Memstart\t\t R/W\t File Length\t")
         for blocks in self.rq:
-            print \
-            ("%s\t %s\t %s\t %s\t %s\t"
-             %  (
-                str(blocks.get_pid()),
-                str(blocks.get_filename()),
-                str(blocks.get_memstart()),
-                str(blocks.get_rw()),
-                str(blocks.get_filelength())
-                )
-            )
-        return
+            print(blocks)
