@@ -8,6 +8,7 @@ Build instructions: Make sure Run.py is executable and run it.
 """
 
 from PretendSystem import PretendSystem as pos
+import ReadyQueue
 
 totally_real_system = pos()  # Construct system!
 print()
@@ -15,7 +16,9 @@ print()
 from PCB import ProcessControlBlock as pcb
 from PCB import create_block
 
-new_item = pcb()
-create_block(new_item)
-print(new_item)
+nah = pcb()
+create_block(nah)
+print(nah)
 print()
+
+rq = ReadyQueue()
