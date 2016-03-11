@@ -79,7 +79,7 @@ class ProcessControlBlock:
             exit()  # If Ctrl-D, just exit.
 
     def __str__(self):
-        representation = ("%s\t %s\t\t %s\t\t %s\t %s\t"
+        representation = ("%s\t%s\t\t%s\t\t%s\t%s\t"
                           % (str(self.get_pid()),
                              str(self.get_filename()),
                              str(self.get_memstart()),

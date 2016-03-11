@@ -39,7 +39,7 @@ class DeviceQueue(object):
     def print_device_queue(self):
         representation = ""
         for block in self.q:
-            representation += ("%s\t %s\t %s\t %s\t %s\t"
+            representation += ("%s\t%s\t%s\t%s\t%s\t"
                                % (str(block.get_pid()),
                                   str(block.get_filename()),
                                   str(block.get_memstart()),
