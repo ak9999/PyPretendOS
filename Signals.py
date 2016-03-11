@@ -5,8 +5,8 @@ Description: Handles making sure system calls and interrupts are valid.
 """
 
 import re
-import CPU
 import DeviceQueue
+import ReadyQueue
 
 def terminate(cpu):
     cpu.remove()
@@ -14,22 +14,7 @@ def terminate(cpu):
 def arrival(cpu):
     cpu.add()
 
-def snapshot(cpu):
-    print("Select queue to display (c, d, p, r): ", end=" ")
-    pattern = input()
-    if valid_snapshot(pattern):
-        snap_signal(pattern)
-    else:
-        print("Bad input, try again.")
-        snapshot(cpu)
-
-def system_call(cpu, call):
-    if valid_device(call):
-        if(call[0] == "p"):
-            cpu.to_printer()
-
-
-def signal(letter, cpu):
+def signal(letter):
     """
     Python does not have switch/cases like C++, but we can
     use dictionaries to mimic that functionality.
