@@ -44,9 +44,11 @@ class PretendSystem:
             self.get_num_disks()
         except KeyboardInterrupt:
             print()
+            cleanup()
             exit()  # If Ctrl-C, just exit.
         except EOFError:
             print()
+            cleanup()
             exit()  # If Ctrl-D, just exit.
 
     '''
@@ -65,9 +67,11 @@ class PretendSystem:
             self.get_num_printers()
         except KeyboardInterrupt:
             print()
+            cleanup()
             exit()  # If Ctrl-C, just exit.
         except EOFError:
             print()
+            cleanup()
             exit()  # If Ctrl-D, just exit.
 
     def get_num_cdrw(self):
@@ -82,9 +86,11 @@ class PretendSystem:
             self.get_num_cdrw()
         except KeyboardInterrupt:
             print()
+            cleanup()
             exit()  # If Ctrl-C, just exit.
         except EOFError:
             print()
+            cleanup()
             exit()  # If Ctrl-D, just exit.
 
     '''
