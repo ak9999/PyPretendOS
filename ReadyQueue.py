@@ -11,7 +11,8 @@ Information about Python 3's deques (pronounced 'decks'):
 https://docs.python.org/3.3/library/collections.html#collections.deque
 We append to the right side of the queue, but pop from the left side.
 The left side is the 'front' of the queue.
-In the C++ STL they just call it 'front' and 'back' like normal human beings.
+Why don't they just use front and back like everybody else?
+Why don't they include a empty() function to check if it's empty?
 """
 
 class ReadyQueue(object):
