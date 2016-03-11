@@ -23,8 +23,7 @@ class ProcessControlBlock:
         self.rw = None
         self.filename = None
         self.file_length = None
-        self.set_memstart()
-        self.set_pid()
+        create_block(self)
 
     def get_pid(self):
         return self.pid
