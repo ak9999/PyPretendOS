@@ -23,6 +23,8 @@ class ProcessControlBlock:
         self.rw = None
         self.filename = None
         self.file_length = None
+        self.set_memstart()
+        self.set_pid()
 
     def get_pid(self):
         return self.pid
@@ -66,10 +68,19 @@ class ProcessControlBlock:
 
     def set_file_name(self):
         print("File name: ", end=" ")
-        self.filename = input()
+        try:
+            self.filename = input()
+        except KeyboardInterrupt:
+            print()
+            cleanup()
+            exit()
+        except EOFError:
+            print()
+            cleanup()
+            exit()  # If Ctrl-D, just exit.
 
     def __str__(self):
-        representation = ("%s\t %s\t %s\t %s\t %s\t"
+        representation = ("%s\t %s\t\t %s\t\t %s\t %s\t"
                           % (str(self.get_pid()),
                              str(self.get_filename()),
                              str(self.get_memstart()),
