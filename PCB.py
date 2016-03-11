@@ -50,7 +50,7 @@ class ProcessControlBlock:
         self.rw = operation
 
     def set_file_length(self):
-        print("File length: ", end=" ")
+        print("File length:", end=" ")
         try:
             self.file_length = int(input())
         except ValueError:
@@ -66,7 +66,7 @@ class ProcessControlBlock:
             exit()
 
     def set_file_name(self):
-        print("File name: ", end=" ")
+        print("File name:", end=" ")
         try:
             self.filename = input()
         except KeyboardInterrupt:

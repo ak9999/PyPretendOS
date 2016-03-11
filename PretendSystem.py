@@ -11,6 +11,7 @@ hardware (CPUs, printers, hard disks, CD/RW drives) are available.
 cleanup() is needed because Python compiles imported files to bytecode and caches them.
 These .pyc files are stored in __pycache__, we can just ignore them.
 """
+
 def cleanup():  # Clean up the pycache
     import shutil
     try:
@@ -114,4 +115,3 @@ class PretendSystem:
             + "# printers: " + str(self.printers) + "\n" \
             + "# CDRW drives: " + str(self.disc_drives)
         return representation
-

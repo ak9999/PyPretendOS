@@ -16,7 +16,9 @@ def leave():
     exit()
 
 def snapshot(rq):
-    rq.print_queue()
+    #  Enter snapshot mode
+    #rq.print_queue()
+    snapshot_mode(rq)
     return
 
 def terminate(rq):
@@ -58,24 +60,24 @@ def snap_signal(letter, dq):
     switch_case = \
         {
             #  Print respective queues, where dq is a device queue
-            "c" : print(dq),
-            "d" : print(dq),
-            "p" : print(dq),
-            "r" : print(dq)           
+            "c" : print,
+            "d" : print,
+            "p" : print,
+            "r" : print           
         }
 
     #  Get function from the switch_case dictionary
     function = switch_case.get(letter)
 
-    return function()  # Return the function and execute it.
+    return function(dq)  # Return the function and execute it.
 
-def complete_signal(pattern, dq):
+def complete_signal(pattern):
     switch_case = \
         {
             #  Print respective queues
-            r"^[C][0-9]{1}$" : dq.task_complete(),
-            r"^[D][0-9]{1}$" : dq.task_complete(),
-            r"^[P][0-9]{1}$" : dq.task_complete()       
+            r"^[C][0-9]{1}$" : task_complete,
+            r"^[D][0-9]{1}$" : task_complete,
+            r"^[P][0-9]{1}$" : task_complete       
         }
 
     #  Get function from the switch_case dictionary
@@ -96,11 +98,30 @@ def valid_device(pattern):
     """
     return re.compile(r"^[cdp][0-9]{1}$").match(pattern) is not None
 
-def valid_snapshot(pattern):
-    return re.compile(r"^[cdpr]{1}$").match(pattern) is not None
-
 def valid_complete(pattern):
     return re.compile(r"^[CDP][0-9]{1}$").match(pattern) is not None
 
 def valid_readwrite(pattern):
-    return re.compile(r"^[rw][0-9]{1}$").match(pattern) is not None
+    return re.compile(r"^[rw]{1}$").match(pattern) is not None
+
+def snapshot_mode(q):
+    print("Entering snapshot mode.")
+    print("Hit the wrong button to leave.")
+    while True:
+        print("S:\\>", end=" ")
+        try:
+            command = input()
+        except KeyboardInterrupt:
+            leave()
+        except EOFError:
+            leave()
+
+        if valid_signal(command):
+            if command[0] == "r":
+                q.print_queue()
+            else:
+                #  device queues
+                return
+
+        else:
+            return

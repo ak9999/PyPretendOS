@@ -62,7 +62,16 @@ class ReadyQueue(object):
                 print("No processes!", end="\n")
 
     def print_queue(self):
+        self.print_cpu()
         print("Ready Queue")
         print("PID\t Filename\t Memstart\t R/W\t File Length\t")
         for blocks in self.rq:
             print(blocks)
+
+    def print_cpu(self):
+        print("Current job in CPU")
+        print("PID\t Filename\t Memstart\t R/W\t File Length\t")
+        try:
+            print(self.cpu[0])
+        except IndexError:
+            return

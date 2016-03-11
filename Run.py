@@ -9,6 +9,7 @@ Build instructions: Make sure Run.py is executable and run it.
 
 from PretendSystem import PretendSystem as pos
 from ReadyQueue import ReadyQueue as rq
+from DeviceQueue import *
 
 def leave():
     print()

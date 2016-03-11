@@ -21,7 +21,10 @@ class DeviceQueue(object):
         self.q.append(block)
 
     def remove(self):
-        self.q.popleft()
+        try:
+            self.q.popleft()
+        except IndexError:
+            print("Nothing to remove!")
 
     def get_number(self):
         return self.number
@@ -54,6 +57,7 @@ class DiscQueue(DeviceQueue):
 
     def __init__(self):
         DeviceQueue.__init__(self)
+        self.add()
         self.device_name = "c%d" % str(self.get_number())
 
 
