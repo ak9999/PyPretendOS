@@ -10,24 +10,29 @@ Build instructions: Make sure Run.py is executable and run it.
 from PretendSystem import PretendSystem as pos
 from ReadyQueue import ReadyQueue
 
-totally_real_system = pos()  # Construct system!
-print()
+def leave():
+    print()
+    cleanup()
+    exit()
+
+def running_mode():
+    while True:
+        print("C:\\", end=" ")
+        try:
+            command = input()
+        except KeyboardInterrupt:
+            leave()
+        except EOFError:
+            leave()
+
 
 from PCB import ProcessControlBlock as pcb
 from PretendSystem import cleanup
+from Signals import *
 
-nah = pcb()
-nah.filename = "executable"
-nah.file_length = "7"
-hey = pcb()
-hey.filename = "why"
-hey.file_length = "5"
+totally_real_system = pos()
 print()
-
-rq = ReadyQueue()
-rq.add(hey)
-print()
-rq.add(nah)
-rq.print_queue()
+running_mode()
 
 cleanup()
+exit()
