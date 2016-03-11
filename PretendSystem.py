@@ -36,7 +36,7 @@ class PretendSystem:
     def get_num_disks(self):
         print("Enter the number of disks:", end=' ')
         try:
-            self.disks = int(input()).strip()
+            self.disks = int(input().strip())
             if self.disks <= 0 or self.disks > 10:
                 print("Must be between 1 and 10.")
                 self.get_num_disks()
@@ -59,7 +59,7 @@ class PretendSystem:
     def get_num_printers(self):
         print("Enter the number of printers:", end=' ')
         try:
-            self.printers = int(input()).strip()
+            self.printers = int(input().strip())
             if self.printers <= 0 or self.printers > 10:
                 print("Must be between 1 and 10.")
                 self.get_num_printers()
@@ -78,7 +78,7 @@ class PretendSystem:
     def get_num_cdrw(self):
         print("Enter the number of CD/RW drives:", end=' ')
         try:
-            self.disc_drives = int(input()).strip()
+            self.disc_drives = int(input().strip())
             if self.disc_drives <= 0 or self.disc_drives > 10:
                 print("Must be between 1 and 10.")
                 self.get_num_cdrw()

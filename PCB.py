@@ -51,7 +51,7 @@ class ProcessControlBlock:
     def set_file_length(self):
         print("File length: ", end=" ")
         try:
-            file_length = int(input())
+            self.file_length = int(input())
         except ValueError:
             print("Error, try again.")
             self.set_file_length()
@@ -68,9 +68,21 @@ class ProcessControlBlock:
         print("File name: ", end=" ")
         self.filename = input()
 
+    def __str__(self):
+        representation = ("%s\t %s\t %s\t %s\t %s\t"
+                          % (str(self.get_pid()),
+                             str(self.get_filename()),
+                             str(self.get_memstart()),
+                             str(self.get_rw()),
+                             str(self.get_file_length()))
+                          )
+        return representation
+
 
 def create_block(block):
     block.set_file_name()
     block.set_file_length()
-    block.memstart()
+    block.set_memstart()
     block.set_pid()
+
+    return block

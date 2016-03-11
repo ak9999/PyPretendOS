@@ -12,5 +12,10 @@ from PretendSystem import PretendSystem as pos
 totally_real_system = pos()  # Construct system!
 print()
 
-while True:
-    print("#: ", end=" ")
+from PCB import ProcessControlBlock as pcb
+from PCB import create_block
+
+new_item = pcb()
+create_block(new_item)
+print(new_item)
+print()
