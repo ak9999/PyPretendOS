@@ -54,7 +54,7 @@ class ProcessControlBlock:
         self.pid = random.randint(2, 300)
 
     def set_rw(self, operation):
-        return  # come back later and add the regex stuff
+        self.rw = operation
 
     def set_file_length(self):
         print("File length: ", end=" ")

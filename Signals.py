@@ -23,6 +23,11 @@ def snapshot(cpu):
         print("Bad input, try again.")
         snapshot(cpu)
 
+def system_call(cpu, call):
+    if valid_device(call):
+        if(call[0] == "p"):
+            cpu.to_printer()
+
 def signal(letter):
     """
     Python does not have switch/cases like C++, but we can
@@ -40,14 +45,14 @@ def signal(letter):
 
     return function()  # Return the function and execute it.
 
-def snap_signal(letter):
+def snap_signal(letter, dq):
     switch_case = \
         {
-            #  Print respective queues
-            "c" : print(),
-            "d" : print(),
-            "p" : print(),
-            "r" : print()           
+            #  Print respective queues, where dq is a device queue
+            "c" : print(dq),
+            "d" : print(dq),
+            "p" : print(dq),
+            "r" : print(dq)           
         }
 
     #  Get function from the switch_case dictionary
@@ -80,7 +85,7 @@ def valid_device(pattern):
     """
     Return whether the pattern is a valid device
     """
-    return re.compile(r"^[cdpr][0-9]{1}$").match(pattern) is not None
+    return re.compile(r"^[cdp][0-9]{1}$").match(pattern) is not None
 
 def valid_complete(pattern):
     """
@@ -93,3 +98,6 @@ def valid_snapshot(pattern):
 
 def valid_complete(pattern):
     return re.compile(r"^[CDP][0-9]{1}$").match(pattern) is not None
+
+def valid_readwrite(pattern):
+    return re.compile(r"^[rw][0-9]{1}$").match(pattern) is not None

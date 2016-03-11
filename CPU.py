@@ -6,6 +6,7 @@ Description: CPU class implementation
 
 from collections import deque
 from ReadyQueue import ReadyQueue
+import ProcessControlBlock as PCB
 
 class CPU(ReadyQueue):
     """
@@ -36,3 +37,14 @@ class CPU(ReadyQueue):
             if self.rq.is_empty():
                 print("No more processes in queue.", end="\n")
                 self.add(self.rq.remove())
+
+    def to_printer(self):
+        self.cpu.set_rw("w")
+
+    def readwrite(self):
+        print("Read or write? (r/w): ", end=" ")
+        answer = input().strip()
+        if(answer.lower() == "r"):
+            self.cpu.set_rw("r")
+        else:
+            self.cpu.set_rw("w")
