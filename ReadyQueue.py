@@ -5,6 +5,7 @@ Description: It's just a queue that will hold PCBs.
 """
 
 from collections import deque
+
 """
 Information about Python 3's deques (pronounced 'decks'):
 https://docs.python.org/3.3/library/collections.html#collections.deque
