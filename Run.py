@@ -14,7 +14,7 @@ totally_real_system = pos()  # Construct system!
 print()
 
 from PCB import ProcessControlBlock as pcb
-from PCB import create_block
+from PretendSystem import cleanup
 
 nah = pcb()
 nah.filename = "executable"
@@ -29,3 +29,5 @@ rq.add(hey)
 print()
 rq.add(nah)
 rq.print_queue()
+
+cleanup()

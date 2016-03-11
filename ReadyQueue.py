@@ -61,6 +61,6 @@ class ReadyQueue(object):
 
     def print_queue(self):
         print("Ready Queue")
-        print("PID\t Filename\t\t Memstart\t\t R/W\t File Length\t")
+        print("PID\t Filename\t Memstart\t R/W\t File Length\t")
         for blocks in self.rq:
             print(blocks)
