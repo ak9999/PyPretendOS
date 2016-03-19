@@ -56,21 +56,6 @@ def signal(letter, rq):
     return function(rq)  # Return the function and execute it.
 
 
-def snap_signal(letter, dq):
-    switch_case = \
-        {
-            #  Print respective queues, where dq is a device queue
-            "c" : print,
-            "d" : print,
-            "p" : print,
-            "r" : print           
-        }
-
-    #  Get function from the switch_case dictionary
-    function = switch_case.get(letter)
-
-    return function(dq)  # Return the function and execute it.
-
 def complete_signal(pattern):
     switch_case = \
         {
@@ -104,11 +89,11 @@ def valid_complete(pattern):
 def valid_readwrite(pattern):
     return re.compile(r"^[rw]{1}$").match(pattern) is not None
 
+
 def snapshot_mode(q):
-    print("Entering snapshot mode.")
-    print("Hit the wrong button to leave.")
+    print("Valid inputs: c, d, p, r")
     while True:
-        print("S:\\>", end=" ")
+        print("S-", end="")
         try:
             command = input()
         except KeyboardInterrupt:
@@ -119,14 +104,17 @@ def snapshot_mode(q):
         if valid_signal(command):
             if command[0] == "r":
                 q.print_queue()
+                return
             elif command[0] == "c":
+                q.print_device_queue()
                 return  #  Gotta add device queues
             elif command[0] == "d":
+                q.print_device_queue()
                 return  #  Gotta add device queues
             elif command[0] == "p":
+                q.print_device_queue()
                 return  #  Gotta add device queues
             else:
-                #  Go back to prompt
                 return
 
         else:
