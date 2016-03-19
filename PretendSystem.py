@@ -30,11 +30,11 @@ class PretendSystem:
         self.sys_gen()  # Call sys_gen upon construction
 
     '''
-    get_num_disks: asks whoever is installing the system for the # of disks.
+    set_num_disks: asks whoever is installing the system for the # of disks.
     If they input anything but a number, they will be prompted again.
     '''
 
-    def get_num_disks(self):
+    def set_num_disks(self):
         print("Enter the number of disks:", end=' ')
         try:
             self.disks = int(input().strip())
@@ -54,10 +54,10 @@ class PretendSystem:
             exit()  # If Ctrl-D, just exit.
 
     '''
-    get_num_printers: same thing but for printers
+    set_num_printers: same thing but for printers
     '''
 
-    def get_num_printers(self):
+    def set_num_printers(self):
         print("Enter the number of printers:", end=' ')
         try:
             self.printers = int(input().strip())
@@ -76,7 +76,7 @@ class PretendSystem:
             cleanup()
             exit()  # If Ctrl-D, just exit.
 
-    def get_num_cdrw(self):
+    def set_num_cdrw(self):
         print("Enter the number of CD/RW drives:", end=' ')
         try:
             self.disc_drives = int(input().strip())
@@ -104,14 +104,27 @@ class PretendSystem:
         print("Welcome to Totally Not UNIX!", end='\n')
         print()
         print("Starting setup...", end="\n")
-        self.get_num_disks()
-        self.get_num_printers()
-        self.get_num_cdrw()
+        self.set_num_disks()
+        self.set_num_printers()
+        self.set_num_cdrw()
+
+
+    def get_num_disks(self):
+        return self.disks
+
+
+    def get_num_printers(self):
+        return self.printers
+
+
+    def get_num_cdrw(self):
+        return self.disc_drives
+
 
     def __str__(self):
-        representation = ""
-        representation += "# CPUs: " + str(self.CPUs) + "\n" \
+        string = ""
+        string += "# CPUs: " + str(self.CPUs) + "\n" \
             + "# disks: " + str(self.disks) + "\n" \
             + "# printers: " + str(self.printers) + "\n" \
             + "# CDRW drives: " + str(self.disc_drives)
-        return representation
+        return string
