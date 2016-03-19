@@ -47,19 +47,15 @@ class ReadyQueue(object):
                 print("ReadyQueue is empty.")
 
     def remove(self):
-        if self.cpu_is_empty() and not self.queue_is_empty():
-            try:
-                self.cpu.append(self.rq[0])
-                self.rq.popleft()
-                self.size -= 1
-            except IndexError:
-                print("No processes to add!", end="\n")
+        if self.cpu_is_empty():
+            print("No process to terminate!")
+            return
         else:
-            try:  # We should only ever need to try once.
-                self.cpu.pop()
-                self.size -= 1
-            except IndexError:  # We have a serious problem if this happens.
-                print("No processes!", end="\n")
+            self.cpu.pop()
+            if not self.queue_is_empty():
+                self.add(self.rq[0])
+                self.rq.popleft()
+        return
 
     def print_queue(self):
         self.print_cpu()
