@@ -29,9 +29,9 @@ def running_mode():
             leave()
 
         if valid_signal(command):
-        	signal(command, sys_rq)
+            signal(command, sys_rq)
         else:
-        	running_mode()
+            running_mode()
 
 
 from PCB import ProcessControlBlock as pcb
@@ -40,6 +40,7 @@ from Signals import *
 
 totally_real_system = pos()
 sys_rq = rq()
+
 print()
 print(totally_real_system)
 running_mode()
