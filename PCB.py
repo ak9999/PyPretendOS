@@ -8,18 +8,20 @@ The PCB includes:
     memory address, etc.
 """
 
-import random  # to generate memory address
 from PretendSystem import cleanup
 
 """
 PCB class definiton.
 """
 
+process_id = 0
+available_address = 256
 
 class ProcessControlBlock:
     def __init__(self):
         self.pid = None
         self.memstart = None
+        self.memend = None
         self.rw = None
         self.filename = None
         self.file_length = None
@@ -31,6 +33,9 @@ class ProcessControlBlock:
     def get_memstart(self):
         return self.memstart
 
+    def get_memend(self):
+        return self.memend
+
     def get_filename(self):
         return self.filename
 
@@ -40,11 +45,22 @@ class ProcessControlBlock:
     def get_rw(self):
         return self.rw
 
+    def get_mem_block(self):
+        print(str(self.memstart) + "," + str(self.memend))
+
     def set_memstart(self):
-        self.memstart = random.randint(100, 32000)
+        global available_address
+        self.memstart = available_address
+
+    def set_memend(self):
+        self.memend = self.memstart + self.file_length
+        global available_address
+        available_address += self.file_length
 
     def set_pid(self):
-        self.pid = random.randint(2, 300)
+        global process_id
+        process_id += 1
+        self.pid = process_id
 
     def set_rw(self, operation):
         self.rw = operation
@@ -79,20 +95,20 @@ class ProcessControlBlock:
             exit()  # If Ctrl-D, just exit.
 
     def __str__(self):
-        representation = ("%s\t%s\t\t%s\t\t%s\t%s\t"
-                          % (str(self.get_pid()),
-                             str(self.get_filename()),
-                             str(self.get_memstart()),
-                             str(self.get_rw()),
-                             str(self.get_file_length()))
-                          )
-        return representation
+        string = ("%s\t%s\t%s\t%s\t%s"
+                  % (str(self.pid).rjust(3),
+                     str(self.filename).rjust(8),
+                     str(self.memstart).rjust(8),
+                     str(self.rw).rjust(3),
+                     str(self.file_length).rjust(11)))
+        return string
 
 
 def create_block(block):
     block.set_file_name()
     block.set_file_length()
     block.set_memstart()
+    block.set_memend()
     block.set_pid()
 
     return block
