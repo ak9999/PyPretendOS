@@ -53,7 +53,7 @@ class ProcessControlBlock:
         self.memstart = available_address
 
     def set_memend(self):
-        self.memend = self.memstart + self.file_length
+        self.memend = self.memstart
         global available_address
         available_address += self.file_length
 
