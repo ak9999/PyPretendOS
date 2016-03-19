@@ -37,19 +37,18 @@ class DeviceQueue(object):
         self.remove()
 
     def print_device_queue(self):
-        representation = ""
+        string = ""
         for block in self.q:
-            representation += ("%s\t%s\t%s\t%s\t%s\t"
-                               % (str(block.get_pid()),
-                                  str(block.get_filename()),
-                                  str(block.get_memstart()),
-                                  str(block.get_rw()),
-                                  str(block.get_filelength()))
-                               )
-        return representation
+            string = ("%s\t%s\t%s\t%s\t%s"
+                  % (str(self.pid).rjust(3),
+                     str(self.filename).rjust(8),
+                     str(self.memstart).rjust(8),
+                     str(self.rw).rjust(3),
+                     str(self.file_length).rjust(11)))
+        return string
 
     def __str__(self):
-        print("%s" % self.device_name, end="\n")
+        print("=====%s" % self.device_name, end="\n")
         self.print_device_queue()
 
 
