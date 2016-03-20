@@ -6,7 +6,8 @@ The PretendSystem class contains information like how many of each piece of
 hardware (CPUs, printers, hard disks, CD/RW drives) are available.
 """
 
-
+from ReadyQueue import ReadyQueue as RQ
+from DeviceQueue import *
 """
 cleanup() is needed because Python compiles imported files to bytecode and caches them.
 These .pyc files are stored in __pycache__, we can just ignore them.
@@ -22,11 +23,18 @@ def cleanup():  # Clean up the pycache
 
 class PretendSystem:
     def __init__(self):
-        self.disks = 0
-        self.printers = 0
-        self.disc_drives = 0
-        self.CPUs = 1  # For now we assume there is only one CPU.
+        #  Number of hardware devices
+        self.num_disks = 0
+        self.num_printers = 0
+        self.num_disc_drives = 0
+        self.num_CPUs = 1  # For now we assume there is only one CPU.
         self.num_processes = 0
+        #  Initialize queues.
+        self.printers = list()
+        self.disks = list()
+        self.discs = list()
+        self.ready = RQ()
+        #  System generation.
         self.sys_gen()  # Call sys_gen upon construction
 
     '''
@@ -37,13 +45,16 @@ class PretendSystem:
     def set_num_disks(self):
         print("Enter the number of disks:", end=' ')
         try:
-            self.disks = int(input().strip())
-            if self.disks <= 0 or self.disks > 10:
+            self.num_disks = int(input().strip())
+            if self.num_disks <= 0 or self.num_disks > 10:
                 print("Must be between 1 and 10.")
-                self.get_num_disks()
+                self.set_num_disks()
+            else:
+                self.disks.append(DiskQueue().set_number(queue_num)
+                                  for queue_num in range(0, self.num_disks))
         except ValueError:
             print("Error, try again.")
-            self.get_num_disks()
+            self.set_num_disks()
         except KeyboardInterrupt:
             print()
             cleanup()
@@ -60,13 +71,16 @@ class PretendSystem:
     def set_num_printers(self):
         print("Enter the number of printers:", end=' ')
         try:
-            self.printers = int(input().strip())
-            if self.printers <= 0 or self.printers > 10:
+            self.num_printers = int(input().strip())
+            if self.num_printers <= 0 or self.num_printers > 10:
                 print("Must be between 1 and 10.")
-                self.get_num_printers()
+                self.set_num_printers()
+            else:
+                self.printers.append(PrinterQueue().set_number(queue_num)
+                                  for queue_num in range(0, self.num_printers))
         except ValueError:
             print("Error, try again.")
-            self.get_num_printers()
+            self.set_num_printers()
         except KeyboardInterrupt:
             print()
             cleanup()
@@ -79,13 +93,16 @@ class PretendSystem:
     def set_num_cdrw(self):
         print("Enter the number of CD/RW drives:", end=' ')
         try:
-            self.disc_drives = int(input().strip())
-            if self.disc_drives <= 0 or self.disc_drives > 10:
+            self.num_disc_drives = int(input().strip())
+            if self.num_disc_drives <= 0 or self.num_disc_drives > 10:
                 print("Must be between 1 and 10.")
-                self.get_num_cdrw()
+                self.set_num_cdrw()
+            else:
+                self.discs.append(DiscQueue().set_number(queue_num)
+                                  for queue_num in range(0, self.num_disc_drives))
         except ValueError:
             print("Error, try again.")
-            self.get_num_cdrw()
+            self.set_num_cdrw()
         except KeyboardInterrupt:
             print()
             cleanup()
@@ -110,21 +127,21 @@ class PretendSystem:
 
 
     def get_num_disks(self):
-        return self.disks
+        return self.num_disks
 
 
     def get_num_printers(self):
-        return self.printers
+        return self.num_printers
 
 
     def get_num_cdrw(self):
-        return self.disc_drives
+        return self.num_disc_drives
 
 
     def __str__(self):
         string = ""
-        string += "# CPUs: " + str(self.CPUs) + "\n" \
-            + "# disks: " + str(self.disks) + "\n" \
-            + "# printers: " + str(self.printers) + "\n" \
-            + "# CDRW drives: " + str(self.disc_drives)
+        string += "# CPUs: " + str(self.num_CPUs) + "\n" \
+            + "# disks: " + str(self.num_disks) + "\n" \
+            + "# printers: " + str(self.num_printers) + "\n" \
+            + "# CDRW drives: " + str(self.num_disc_drives)
         return string
