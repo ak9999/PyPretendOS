@@ -5,8 +5,6 @@ Description: It's just a queue that will hold PCBs.
 """
 
 from collections import deque
-from DeviceQueue import *
-from PretendSystem import PretendSystem as pos
 
 """
 Information about Python 3's deques (pronounced 'decks'):
