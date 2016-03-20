@@ -15,9 +15,39 @@ def leave():
     cleanup()
     exit()
 
+
+def snapshot_mode(q):
+    print("Valid inputs: c, d, p, r")
+    while True:
+        print("S-", end="")
+        try:
+            command = input()
+        except KeyboardInterrupt:
+            leave()
+        except EOFError:
+            leave()
+
+        if valid_signal(command):
+            if command[0] == "r":
+                q.print_queue()
+                return
+            elif command[0] == "c":
+                #  print(queue)
+                return  #  Gotta add device queues
+            elif command[0] == "d":
+                #  print(queue)
+                return  #  Gotta add device queues
+            elif command[0] == "p":
+                #  print(queue)
+                return  #  Gotta add device queues
+            else:
+                return
+
+        else:
+            return
+
+
 def snapshot(rq):
-    #  Enter snapshot mode
-    #rq.print_queue()
     snapshot_mode(rq)
     return
 
@@ -29,6 +59,7 @@ def arrival(rq):
     pcb = PCB()
     rq.add(pcb)
     return
+
 
 def signal(letter, rq):
     """
@@ -47,28 +78,13 @@ def signal(letter, rq):
             #  Get function from the switch_case dictionary
             function = switch_case.get(letter)
         else:
-            print("Bad input.")
+            print("Bad input.") #maybe send to device here
             return
     except TypeError:
         print("You broke it.")
         leave()
 
     return function(rq)  # Return the function and execute it.
-
-
-def complete_signal(pattern):
-    switch_case = \
-        {
-            #  Print respective queues
-            r"^[C][0-9]{1}$" : task_complete,
-            r"^[D][0-9]{1}$" : task_complete,
-            r"^[P][0-9]{1}$" : task_complete       
-        }
-
-    #  Get function from the switch_case dictionary
-    function = switch_case.get(pattern)
-
-    return function()  # Return the function and execute it.
 
 
 def valid_signal(pattern):
@@ -88,34 +104,3 @@ def valid_complete(pattern):
 
 def valid_readwrite(pattern):
     return re.compile(r"^[rw]{1}$").match(pattern) is not None
-
-
-def snapshot_mode(q):
-    print("Valid inputs: c, d, p, r")
-    while True:
-        print("S-", end="")
-        try:
-            command = input()
-        except KeyboardInterrupt:
-            leave()
-        except EOFError:
-            leave()
-
-        if valid_signal(command):
-            if command[0] == "r":
-                q.print_queue()
-                return
-            elif command[0] == "c":
-                q.print_device_queue()
-                return  #  Gotta add device queues
-            elif command[0] == "d":
-                q.print_device_queue()
-                return  #  Gotta add device queues
-            elif command[0] == "p":
-                q.print_device_queue()
-                return  #  Gotta add device queues
-            else:
-                return
-
-        else:
-            return
