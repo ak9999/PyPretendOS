@@ -51,8 +51,10 @@ class PretendSystem:
                 print("Must be between 1 and 10.")
                 self.set_num_disks()
             else:
-                self.disks.append(DiskQueue().set_number(queue_num)
-                                  for queue_num in range(0, self.num_disks))
+                for _ in range(0, self.num_disks):
+                    dq = DiskQueue()
+                    dq.set_number(_)
+                    self.disks.append(dq)
         except ValueError:
             print("Error, try again.")
             self.set_num_disks()
@@ -73,9 +75,10 @@ class PretendSystem:
                 print("Must be between 1 and 10.")
                 self.set_num_printers()
             else:
-                # I can't believe Python allows this kind of thing to happen.
-                self.printers.append(PrinterQueue().set_number(queue_num)
-                                     for queue_num in range(0, self.num_printers))
+                for _ in range(0, self.num_printers):
+                    dq = PrinterQueue()
+                    dq.set_number(_)
+                    self.printers.append(dq)
         except ValueError:
             print("Error, try again.")
             self.set_num_printers()
@@ -96,8 +99,10 @@ class PretendSystem:
                 print("Must be between 1 and 10.")
                 self.set_num_cdrw()
             else:
-                self.discs.append(DiscQueue().set_number(queue_num)
-                                  for queue_num in range(0, self.num_disc_drives))
+                for _ in range(0, self.num_disc_drives):
+                    dq = DiscQueue()
+                    dq.set_number(_)
+                    self.discs.append(dq)
         except ValueError:
             print("Error, try again.")
             self.set_num_cdrw()
