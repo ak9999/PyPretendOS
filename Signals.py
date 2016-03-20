@@ -147,7 +147,7 @@ def valid_signal(pattern):
     """
     Return whether the pattern is a valid signal
     """
-    return re.compile(r"^[AcdrSt]{1}$").match(pattern) is not None
+    return re.compile(r"^[AcdrStp]{1}$").match(pattern) is not None
 
 def valid_device(pattern):
     """
