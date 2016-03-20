@@ -10,15 +10,19 @@ Build instructions: Make sure Run.py is executable and run it.
 from PretendSystem import PretendSystem as pos
 from ReadyQueue import ReadyQueue as rq
 from DeviceQueue import *
+from PCB import ProcessControlBlock as pcb
+from PretendSystem import cleanup
+from Signals import *
+
 
 def leave():
     print()
     cleanup()
     exit()
 
-def running_mode():
+
+def running():
     global totally_real_system
-    global sys_rq
     while True:
         print("C:\\>", end=" ")
         try:
@@ -29,21 +33,15 @@ def running_mode():
             leave()
 
         if valid_signal(command):
-            signal(command, sys_rq)
+            signal(command, totally_real_system)
+        elif valid_device(command):
+            send_to_device(command, totally_real_system)
         else:
-            running_mode()
-
-
-from PCB import ProcessControlBlock as pcb
-from PretendSystem import cleanup
-from Signals import *
+            running()
 
 totally_real_system = pos()
-sys_rq = rq()
-
-print()
-print(totally_real_system)
-running_mode()
+print("Reminder: We count devices starting with 0.\n")
+running()
 
 cleanup()
 exit()

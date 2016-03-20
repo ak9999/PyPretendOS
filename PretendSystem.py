@@ -152,7 +152,7 @@ class PretendSystem:
         print("Enter the # of the device you'd like to view:", end=" ")
         try:
             number = int(input().strip())
-            if(number < 0): return
+            if number < 0: return
         except ValueError:
             print("Positive integers only.")
         except KeyboardInterrupt:
@@ -165,7 +165,7 @@ class PretendSystem:
             exit()  # If Ctrl-D, just exit.
 
         try:
-            print(device[number])
+            device[number].print_device_queue()
         except IndexError:
             print("Bad index.")
             print(self)

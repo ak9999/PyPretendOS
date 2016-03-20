@@ -32,10 +32,7 @@ def snapshot_mode(system):
             if command[0] == "r":
                 system.ready.print_queue()
                 return
-            else:
-                return
-        elif valid_device(command):
-            if command[0] == "c":
+            elif command[0] == "c":
                 system.print_device(system.discs)
                 return
             elif command[0] == "d":
@@ -45,8 +42,8 @@ def snapshot_mode(system):
                 system.print_device(system.printers)
                 return
             else:
+                print("Problem.")
                 return
-
         else:
             return
 
