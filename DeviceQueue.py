@@ -25,6 +25,12 @@ class DeviceQueue(object):
         except IndexError:
             print("Nothing to remove!")
 
+    def top(self):
+        try:
+            return self.q[0]
+        except IndexError:
+            print("Nothing to remove!")
+
     def get_number(self):
         return self.number
 

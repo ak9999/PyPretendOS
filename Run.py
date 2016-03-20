@@ -36,6 +36,8 @@ def running():
             signal(command, totally_real_system)
         elif valid_device(command):
             send_to_device(command, totally_real_system)
+        elif valid_complete(command):
+            complete_process(command, totally_real_system)
         else:
             running()
 

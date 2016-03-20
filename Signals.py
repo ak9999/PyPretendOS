@@ -137,6 +137,39 @@ def send_to_device(command, system):
     else:
         print("Serious problem.")
 
+
+def complete_process(command, system):
+    if command[0] == 'C':
+        if not system.discs[int(command[1:])]:
+            print("Nothing in queue!")
+        elif int(command[1:]) > system.get_num_cdrw() - 1:
+            print("Bad index. Remember we count from 0.")
+        else:
+            process = system.discs[int(command[1:])].top()
+            system.ready.add(process)
+            system.discs[int(command[1:])].remove()
+            print("Process complete!")
+    if command[0] == 'D':
+        if not system.discs[int(command[1:])]:
+            print("Nothing in queue!")
+        elif int(command[1:]) > system.get_num_cdrw() - 1:
+            print("Bad index. Remember we count from 0.")
+        else:
+            process = system.disks[int(command[1:])].top()
+            system.ready.add(process)
+            system.disks[int(command[1:])].remove()
+            print("Process complete!")
+    if command[0] == 'P':
+        if not system.printers[int(command[1:])]:
+            print("Nothing in queue!")
+        elif int(command[1:]) > system.get_num_cdrw() - 1:
+            print("Bad index. Remember we count from 0.")
+        else:
+            process = system.discs[int(command[1:])].top()
+            system.ready.add(process)
+            system.printers[int(command[1:])].remove()
+            print("Process complete!")
+
 """
 These are functions that will match inputs with regular expressions
 to make sure the user doesn't break this program
