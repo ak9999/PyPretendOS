@@ -101,7 +101,7 @@ def send_to_device(command, system):
             print("Bad index. Remember we count from 0.")
         else:
             process = system.ready.cpu[0]
-            system.discs[int(command[1:])].append(process)
+            system.discs[int(command[1:])].add(process)
             print("Process sent to %s." % command)
     elif command[0] == 'd':
         if system.ready.cpu_is_empty():
@@ -110,7 +110,7 @@ def send_to_device(command, system):
             print("Bad index. Remember we count from 0.")
         else:
             process = system.ready.cpu[0]
-            system.disks[int(command[1:])].append(process)
+            system.disks[int(command[1:])].add(process)
             print("Process sent to %s." % command)
     elif command[0] == 'p':
         if system.ready.cpu_is_empty():
@@ -119,7 +119,7 @@ def send_to_device(command, system):
             print("Bad index. Remember we count from 0.")
         else:
             process = system.ready.cpu[0]
-            system.printers[int(command[1:])].append(process)
+            system.printers[int(command[1:])].add(process)
             print("Process sent to %s." % command)
     else:
         print("Serious problem.")
