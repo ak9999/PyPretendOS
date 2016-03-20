@@ -37,6 +37,7 @@ class DeviceQueue(object):
         self.remove()
 
     def print_device_queue(self):
+        print("PID\t Filename\t Memstart\t R/W\t File Length\t")
         string = ""
         for block in self.q:
             string += str(block + "\n")
