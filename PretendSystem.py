@@ -13,6 +13,7 @@ cleanup() is needed because Python compiles imported files to bytecode and cache
 These .pyc files are stored in __pycache__, we can just ignore them.
 """
 
+
 def cleanup():  # Clean up the pycache
     import shutil
     try:
@@ -20,7 +21,9 @@ def cleanup():  # Clean up the pycache
     except FileNotFoundError:
         return
 
-
+"""
+This is a large mess of functions that will handle the operating system.
+"""
 class PretendSystem:
     def __init__(self):
         #  Number of hardware devices
@@ -35,13 +38,11 @@ class PretendSystem:
         self.discs = list()
         self.ready = RQ()
         #  System generation.
-        self.sys_gen()  # Call sys_gen upon construction
+        self.sys_gen()  # Call sys_gen upon instantiation
 
-    '''
-    set_num_disks: asks whoever is installing the system for the # of disks.
-    If they input anything but a number, they will be prompted again.
-    '''
-
+    """
+    Setter methods to set the number of hardware components.
+    """
     def set_num_disks(self):
         print("Enter the number of disks:", end=' ')
         try:
@@ -64,10 +65,6 @@ class PretendSystem:
             cleanup()
             exit()  # If Ctrl-D, just exit.
 
-    '''
-    set_num_printers: same thing but for printers
-    '''
-
     def set_num_printers(self):
         print("Enter the number of printers:", end=' ')
         try:
@@ -76,8 +73,9 @@ class PretendSystem:
                 print("Must be between 1 and 10.")
                 self.set_num_printers()
             else:
+                # I can't believe Python allows this kind of thing to happen.
                 self.printers.append(PrinterQueue().set_number(queue_num)
-                                  for queue_num in range(0, self.num_printers))
+                                     for queue_num in range(0, self.num_printers))
         except ValueError:
             print("Error, try again.")
             self.set_num_printers()
@@ -113,10 +111,9 @@ class PretendSystem:
             exit()  # If Ctrl-D, just exit.
 
     '''
-    This is the sysgen function, where I ask how many of each piece of hardware
+    This is the sys_gen function, where I ask how many of each piece of hardware
     there is. For now I assume there is only ONE CPU.
     '''
-
     def sys_gen(self):
         print("Welcome to Totally Not UNIX!", end='\n')
         print()
@@ -125,19 +122,52 @@ class PretendSystem:
         self.set_num_printers()
         self.set_num_cdrw()
 
-
+    """
+    Getter methods to retrieve the hardware components.
+    """
     def get_num_disks(self):
         return self.num_disks
-
 
     def get_num_printers(self):
         return self.num_printers
 
-
     def get_num_cdrw(self):
         return self.num_disc_drives
 
+    def get_discs(self):
+        return self.discs
 
+    def get_disks(self):
+        return self.disks
+
+    def get_printers(self):
+        return self.printers
+
+    def print_device(self, device):
+        print("Enter the # of the device you'd like to view:", end=" ")
+        try:
+            number = int(input().strip())
+            if(number < 0): return
+        except ValueError:
+            print("Positive integers only.")
+        except KeyboardInterrupt:
+            print()
+            cleanup()
+            exit()  # If Ctrl-C, just exit.
+        except EOFError:
+            print()
+            cleanup()
+            exit()  # If Ctrl-D, just exit.
+
+        try:
+            print(device[number])
+        except IndexError:
+            print("Bad index.")
+            print(self)
+
+    """
+    This is so we can easily print out the system details.
+    """
     def __str__(self):
         string = ""
         string += "# CPUs: " + str(self.num_CPUs) + "\n" \
