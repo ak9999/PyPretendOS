@@ -5,6 +5,8 @@ Description: It's just a queue that will hold PCBs.
 """
 
 from collections import deque
+from DeviceQueue import *
+from PretendSystem import PretendSystem as pos
 
 """
 Information about Python 3's deques (pronounced 'decks'):
@@ -14,6 +16,7 @@ The left side is the 'front' of the queue.
 Why don't they just use front and back like everybody else?
 Why don't they include a empty() function to check if it's empty?
 """
+
 
 class ReadyQueue(object):
     def __init__(self):
