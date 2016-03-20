@@ -98,8 +98,15 @@ def send_to_device(command, system):
             print("Bad index. Remember we count from 0.")
         else:
             process = system.ready.cpu[0]
+            print("Is this a read or write?:", end=" ")
+            operation = str(input().strip())
+            if operation.lower() != 'r' or operation.lower() != 'w':
+                print("Bad input.")
+                return
+            process.set_rw(operation.lower())
             system.discs[int(command[1:])].add(process)
             print("Process sent to %s." % command)
+            system.cpu.pop()
     elif command[0] == 'd':
         if system.ready.cpu_is_empty():
             print("There isn't a process running.")
@@ -107,8 +114,15 @@ def send_to_device(command, system):
             print("Bad index. Remember we count from 0.")
         else:
             process = system.ready.cpu[0]
+            print("Is this a read or write?:", end=" ")
+            operation = str(input().strip())
+            if operation.lower() != 'r' or operation.lower() != 'w':
+                print("Bad input.")
+                return
+            process.set_rw(operation.lower())
             system.disks[int(command[1:])].add(process)
             print("Process sent to %s." % command)
+            system.cpu.pop()
     elif command[0] == 'p':
         if system.ready.cpu_is_empty():
             print("There isn't a process running.")
@@ -116,8 +130,10 @@ def send_to_device(command, system):
             print("Bad index. Remember we count from 0.")
         else:
             process = system.ready.cpu[0]
+            process.set_rw("w")
             system.printers[int(command[1:])].add(process)
             print("Process sent to %s." % command)
+            system.cpu.pop()
     else:
         print("Serious problem.")
 
