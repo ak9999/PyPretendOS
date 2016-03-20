@@ -50,16 +50,16 @@ class DeviceQueue(object):
 class DiscQueue(DeviceQueue):
     def __init__(self):
         DeviceQueue.__init__(self)
-        self.device_name = "c%d" % str(self.get_number())
+        self.device_name = "c" + str(self.get_number())
 
 
 class DiskQueue(DeviceQueue):
     def __init__(self):
         DeviceQueue.__init__(self)
-        self.device_name = "d%d" % str(self.get_number())
+        self.device_name = "d" + str(self.get_number())
 
 
 class PrinterQueue(DeviceQueue):
     def __init__(self):
         DeviceQueue.__init__(self)
-        self.device_name = "p%d" % str(self.get_number())
+        self.device_name = "p" + str(self.get_number())
