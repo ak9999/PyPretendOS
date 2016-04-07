@@ -7,43 +7,39 @@ Description: Simulates an operating system and system hardware.
 Build instructions: Make sure Run.py is executable and run it.
 """
 
-from PretendSystem import PretendSystem as pos
-from ReadyQueue import ReadyQueue as rq
-from DeviceQueue import *
-from PCB import ProcessControlBlock as pcb
-from PretendSystem import cleanup
-from Signals import *
+from PretendSystem import PretendSystem
+import Signals
 
 
 def leave():
     print()
-    cleanup()
+    Signals.cleanup()
     exit()
 
 
 def running():
-    global totally_real_system
+    totally_real_system = PretendSystem()
     while True:
         print("C:\\>", end=" ")
         try:
             command = input()
         except KeyboardInterrupt:
-            leave()
+            Signals.leave()
         except EOFError:
-            leave()
+            Signals.leave()
 
-        if valid_signal(command):
-            signal(command, totally_real_system)
-        elif valid_device(command):
-            send_to_device(command, totally_real_system)
-        elif valid_complete(command):
-            complete_process(command, totally_real_system)
+        if Signals.valid_signal(command):
+            Signals.signal(command, totally_real_system)
+        elif Signals.valid_device(command):
+            Signals.send_to_device(command, totally_real_system)
+        elif Signals.valid_complete(command):
+            Signals.complete_process(command, totally_real_system)
         else:
             running()
 
-totally_real_system = pos()
-print("Reminder: We count devices starting with 0.\n")
-running()
 
-cleanup()
-exit()
+def main():
+    running()
+
+if __name__ == '__main__':
+    main()
