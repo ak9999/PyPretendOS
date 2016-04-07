@@ -154,7 +154,8 @@ class PretendSystem:
         print("Enter the # of the device you'd like to view:", end=" ")
         try:
             number = int(input().strip())
-            if number < 0: return
+            if number < 0:
+                return
         except ValueError:
             print("Positive integers only.")
         except KeyboardInterrupt:
