@@ -17,6 +17,7 @@ PCB class definiton.
 process_id = 0
 available_address = 256
 
+
 class ProcessControlBlock:
     def __init__(self):
         self.pid = None
