@@ -16,7 +16,7 @@ Why don't they include a empty() function to check if it's empty?
 """
 
 
-class ReadyQueue(object):
+class ReadyQueue:
     def __init__(self):
         self.rq = deque()  # Just make a deque.
         self.size = 0
@@ -35,7 +35,7 @@ class ReadyQueue(object):
             return True
 
     def add(self, other=None):
-        if not other == None:
+        if other is not None:
             self.rq.append(other)
             self.size += 1
         else:
