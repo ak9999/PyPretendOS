@@ -11,7 +11,7 @@ This is the generic device queue that will be inherited by the actual devices.
 """
 
 
-class DeviceQueue(object):
+class DeviceQueue:
     def __init__(self):
         self.q = deque()
         self.number = None
