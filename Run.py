@@ -20,7 +20,7 @@ def leave():
 def running():
     totally_real_system = PretendSystem()
     while True:
-        print("$", end=" ")
+        print('$', end=' ')
         try:
             command = input()
         except KeyboardInterrupt:
@@ -34,6 +34,8 @@ def running():
             Signals.send_to_device(command, totally_real_system)
         elif Signals.valid_complete(command):
             Signals.complete_process(command, totally_real_system)
+        else:
+            pass
 
 
 def main():
@@ -41,4 +43,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
