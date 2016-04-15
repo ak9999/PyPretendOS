@@ -5,6 +5,7 @@ Description: CPU class implementation
 """
 
 from collections import deque
+from PretendSystem import cleanup
 
 """
 This is the generic device queue that will be inherited by the actual devices.
