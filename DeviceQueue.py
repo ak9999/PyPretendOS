@@ -5,7 +5,6 @@ Description: CPU class implementation
 """
 
 from collections import deque
-from PretendSystem import cleanup
 
 """
 This is the generic device queue that will be inherited by the actual devices.
@@ -74,14 +73,6 @@ class DiskQueue(DeviceQueue):
         except ValueError:
             print("Error, try again.")
             self.set_cylinders(num)
-        except KeyboardInterrupt:
-            print()
-            cleanup()
-            exit()  # If Ctrl-C, just exit.
-        except EOFError:
-            print()
-            cleanup()
-            exit()  # If Ctrl-D, just exit.
 
 class PrinterQueue(DeviceQueue):
     def __init__(self):
