@@ -45,6 +45,8 @@ class PretendSystem:
         self.sys_gen()  # Call sys_gen upon instantiation
 
         self.total_cpu = 0
+        self.totals = list()
+        self.total_avg = 0
 
     """
     Setter methods.
@@ -60,6 +62,9 @@ class PretendSystem:
         print("Enter the initial burst estimate in milliseconds:", end=' ')
         try:
             t = float(input().strip())
+            if t < 0:
+                print("Can't be negative. Try again.")
+                self.set_init_burst()
             if self.set_tau(t) is False:
                 print("Error setting initial burst.")
         except ValueError:
@@ -207,28 +212,19 @@ class PretendSystem:
     def get_printers(self):
         return self.printers
 
-    def print_device(self, device):
-        print("Enter the # of the device you'd like to view:", end=" ")
-        try:
-            number = int(input().strip())
-            if number < 0:
-                return
-        except ValueError:
-            print("Positive integers only.")
-        except KeyboardInterrupt:
-            print()
-            cleanup()
-            exit()  # If Ctrl-C, just exit.
-        except EOFError:
-            print()
-            cleanup()
-            exit()  # If Ctrl-D, just exit.
+    def print_device(self, device_list):
+        print("PID\tFilename\t Memstart R/W\tFile Length\tCPU Time\tBurst")
+        for x in range(len(device_list)):
+            print("Device: " + device_list[x].device_name + str(x))
+            device_list[x].print_device_queue()
 
-        try:
-            device[number].print_device_queue()
-        except IndexError:
-            print("Bad index.")
-            print(self)
+    def sysavg(self):
+        if len(self.totals) < 1:
+            return
+        else:
+            for x in self.totals:
+                self.total_avg += x
+            self.total_avg /= len(self.totals)
 
     """
     This is so we can easily print out the system details.
