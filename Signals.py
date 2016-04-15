@@ -138,35 +138,43 @@ def send_to_device(command, system):
 
 def complete_process(command, system):
     if command[0] == 'C':
-        if not system.discs[int(command[1:])]:
-            print("Nothing in queue!")
-        elif int(command[1:]) > system.get_num_cdrw() - 1:
+        if int(command[1:]) > system.get_num_cdrw() - 1:
             print("Bad index. Remember we count from 0.")
+        elif not system.discs[int(command[1:])]:
+            print("Nothing in queue!")
+            return
         else:
             process = system.discs[int(command[1:])].top()
             system.ready.add(process)
-            system.discs[int(command[1:])].remove()
-            print("Process complete!")
+            if system.discs[int(command[1:])].remove() is not False:
+                print("Process complete! Moved to back of ready queue.")
+            else:
+                print("No process in queue!")
     if command[0] == 'D':
-        if not system.discs[int(command[1:])]:
-            print("Nothing in queue!")
-        elif int(command[1:]) > system.get_num_cdrw() - 1:
+        if int(command[1:]) > system.get_num_cdrw() - 1:
             print("Bad index. Remember we count from 0.")
+        elif not system.discs[int(command[1:])]:
+            print("Nothing in queue!")
+            return
         else:
             process = system.disks[int(command[1:])].top()
             system.ready.add(process)
-            system.disks[int(command[1:])].remove()
-            print("Process complete!")
+            if system.disks[int(command[1:])].remove() is not False:
+                print("Process complete! Moved to back of ready queue.")
+            else:
+                print("No process in queue!")
     if command[0] == 'P':
-        if not system.printers[int(command[1:])]:
-            print("Nothing in queue!")
-        elif int(command[1:]) > system.get_num_cdrw() - 1:
+        if int(command[1:]) > system.get_num_cdrw() - 1:
             print("Bad index. Remember we count from 0.")
+        elif not system.printers[int(command[1:])]:
+            print("Nothing in queue!")
         else:
             process = system.discs[int(command[1:])].top()
             system.ready.add(process)
-            system.printers[int(command[1:])].remove()
-            print("Process complete!")
+            if system.printers[int(command[1:])].remove() is not False:
+                print("Process complete! Moved to back of ready queue.")
+            else:
+                print("No process in queue!")
 
 """
 These are functions that will match inputs with regular expressions
