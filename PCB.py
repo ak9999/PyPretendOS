@@ -194,3 +194,9 @@ def create_block(block):
     block.set_pid()
 
     return block
+
+def __str__(self):
+    string = "{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\t{8}\t{9}".format(self.pid, self.memstart, self.rw, self.filename, self.file_length, self.location, self.cpu_total, self.avg_burst)
+    return string
+
+__repr__ = __str__

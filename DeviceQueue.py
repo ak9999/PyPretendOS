@@ -139,52 +139,16 @@ class DiskQueue(DeviceQueue):
             if not self.frozen:
                 print("Pending requests.")
                 for reqs in range(0, len(self.q)):
-                    string = ("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s"
-                        % str(self.q[reqs].pid).rjust(3),
-                              str(self.q[reqs].filename).rjust(5),
-                              str(self.q[reqs].memstart).rjust(5),
-                              str(self.q[reqs].rw).rjust(3),
-                              str(self.q[reqs].file_length).rjust(5),
-                              str(self.q[reqs].cpu_total).rjust(3),
-                              str(self.q[reqs].avg_burst).rjust(3),
-                              str(self.q[reqs].location).rjust(3))
-                    print(string)
+                    print(str(self.q[reqs]))
                 print("Servicing.")
                 for reqs in range(0, len(self.r)):
-                    string = ("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s"
-                          % str(self.r[reqs].pid).rjust(3),
-                          str(self.r[reqs].filename).rjust(5),
-                          str(self.r[reqs].memstart).rjust(5),
-                          str(self.r[reqs].rw).rjust(3),
-                          str(self.r[reqs].file_length).rjust(5),
-                          str(self.r[reqs].cpu_total).rjust(3),
-                          str(self.r[reqs].avg_burst).rjust(3),
-                          str(self.r[reqs].location).rjust(3))
-                    print(string)
+                    print(str(self.r[reqs]))
             else:
                 for reqs in range(0, len(self.r)):
-                    string = ("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s"
-                            % str(self.r[reqs].pid).rjust(3),
-                              str(self.r[reqs].filename).rjust(5),
-                              str(self.r[reqs].memstart).rjust(5),
-                              str(self.r[reqs].rw).rjust(3),
-                              str(self.r[reqs].file_length).rjust(5),
-                              str(self.r[reqs].cpu_total).rjust(3),
-                              str(self.r[reqs].avg_burst).rjust(3),
-                              str(self.r[reqs].location).rjust(3))
-                    print(string)
+                    print(str(self.r[reqs]))
                 print("Pending requests.")
                 for reqs in range(0, len(self.q)):
-                    string = ("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s"
-                              % str(self.q[reqs].pid).rjust(3),
-                              str(self.q[reqs].filename).rjust(5),
-                              str(self.q[reqs].memstart).rjust(5),
-                              str(self.q[reqs].rw).rjust(3),
-                              str(self.q[reqs].file_length).rjust(5),
-                              str(self.q[reqs].cpu_total).rjust(3),
-                              str(self.q[reqs].avg_burst).rjust(3),
-                              str(self.q[reqs].location).rjust(3))
-                    print(string)
+                    print(str(self.q[reqs]))
 
     def fscan_sort(self):
         q_list = list(self.q)

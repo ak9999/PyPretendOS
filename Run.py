@@ -30,11 +30,12 @@ def running():
 
         if Signals.valid_signal(command):
             Signals.signal(command, totally_real_system)
+            totally_real_system.sjf()
         elif Signals.valid_device(command):
             Signals.send_to_device(command, totally_real_system)
         elif Signals.valid_complete(command):
             Signals.complete_process(command, totally_real_system)
-        else:
+            totally_real_system.sjf()
             pass
 
 

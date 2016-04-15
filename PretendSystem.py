@@ -240,3 +240,6 @@ class PretendSystem:
             + "# printers: " + str(self.num_printers) + "\n" \
             + "# CDRW drives: " + str(self.num_disc_drives)
         return string
+
+    def sjf(self):
+        self.ready.sjf_sort(self.alpha, self.tau)

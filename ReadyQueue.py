@@ -73,3 +73,11 @@ class ReadyQueue:
             print(string)
         except IndexError:
             return
+
+    def sjf_sort(self, alpha, tau):
+        ready_list = list(self.rq)
+        for pcb in range(1, len(ready_list)):
+            if ready_list[pcb-1].cpu_total < ready_list[pcb].cpu_total:
+                ready_list[pcb-1], ready_list[pcb] = ready_list[pcb], ready_list[pcb-1]
+            elif ready_list[pcb-1].cpu_total == ready_list[pcb].cpu_total:
+                ready_list[pcb-1].pid, ready_list[pcb].pid = ready_list[pcb], ready_list[pcb-1]
