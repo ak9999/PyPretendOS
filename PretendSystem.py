@@ -47,6 +47,31 @@ class PretendSystem:
     """
     Setter methods.
     """
+    def set_tau(self, num):
+        try:
+            self.tau = num
+            return True
+        except ValueError:
+            return False
+
+    def set_init_burst(self):
+        print("Enter the initial burst estimate in milliseconds:", end=' ')
+        try:
+            t = float(input().strip())
+            if self.set_tau(t) is False:
+                print("Error setting initial burst.")
+        except ValueError:
+            print("Error, try again.")
+            self.set_init_burst()
+        except KeyboardInterrupt:
+            print()
+            cleanup()
+            exit()  # If Ctrl-C, just exit.
+        except EOFError:
+            print()
+            cleanup()
+            exit()  # If Ctrl-D, just exit.
+
     def set_hist_param(self):
         print("Enter the history parameter (α, 0 ≤ α ≤ 1):", end=' ')
         try:
@@ -56,7 +81,7 @@ class PretendSystem:
                 self.set_hist_param()
         except ValueError:
             print("Error, try again.")
-            self.set_num_disks()
+            self.set_hist_param()
         except KeyboardInterrupt:
             print()
             cleanup()
@@ -151,10 +176,14 @@ class PretendSystem:
         self.set_num_printers()
         self.set_num_cdrw()
         self.set_hist_param()
+        self.set_init_burst()
 
     """
     Getter methods.
     """
+    def get_tau(self):
+        return self.tau
+
     def get_hist_param(self):
         return self.alpha
 
