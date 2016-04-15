@@ -15,10 +15,34 @@ def leave():
     exit()
 
 
+def timer(system):
+    if(system.ready.cpu_is_empty):
+        return
+    
+    print("How long has the current process been using the CPU?:", end=' ')
+    try:
+        t = float(input().strip())
+        if t < 0:
+            print("Can't be negative. Try again.")
+            timer()
+        else:
+            system.ready.rq[0].add_time(t)
+    except ValueError:
+        print("Error, try again.")
+        timer(system)
+    except KeyboardInterrupt:
+        print()
+        cleanup()
+        exit()  # If Ctrl-C, just exit.
+    except EOFError:
+        print()
+        cleanup()
+        exit()  # If Ctrl-D, just exit.
+
 def snapshot_mode(system):
     print("Valid inputs: c, d, p, r")
     while True:
-        print("Options: c-#, d-#, p-#")
+        print("Options: c, d, p")
         print("S-", end="")
         try:
             command = input()
@@ -41,7 +65,7 @@ def snapshot_mode(system):
                 system.print_device(system.printers)
                 return
             else:
-                print("Problem.")
+                print("Invalid option.")
                 return
         else:
             return
@@ -74,18 +98,13 @@ def signal(letter, system):
             "S": snapshot,
             "t": terminate
         }
-
-    try:
-        if letter in switch_case:
-            #  Get function from the switch_case dictionary
-            function = switch_case.get(letter)
-            return function(system)  # Return the function and execute it.
-        else:
-            print("Bad input.")  # maybe send to device here
-            return
-    except TypeError:
-        print("You broke it.")
-        leave()
+    if letter in switch_case:
+        #  Get function from the switch_case dictionary
+        function = switch_case.get(letter)
+        return function(system)  # Return the function and execute it.
+    else:
+        #print("Bad input.")  # maybe send to device here
+        return
 
 
 def send_to_device(command, system):
@@ -96,6 +115,7 @@ def send_to_device(command, system):
             print("Bad index. Remember we count from 0.")
         else:
             process = system.ready.cpu[0]
+            process.set_file_name()
             print("Is this a read or write?:", end=" ")
             operation = str(input().strip()).lower()
             if not valid_readwrite(operation):
@@ -112,6 +132,8 @@ def send_to_device(command, system):
             print("Bad index. Remember we count from 0.")
         else:
             process = system.ready.cpu[0]
+            process.set_file_name()
+            process.set_cylinder()
             print("Is this a read or write?:", end=" ")
             operation = str(input().strip()).lower()
             if not valid_readwrite(operation):
@@ -128,6 +150,7 @@ def send_to_device(command, system):
             print("Bad index. Remember we count from 0.")
         else:
             process = system.ready.cpu[0]
+            process.set_file_name()
             process.set_rw("w")
             system.printers[int(command[1:])].add(process)
             print("Process sent to %s." % command)
