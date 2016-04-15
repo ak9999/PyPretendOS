@@ -16,28 +16,26 @@ def leave():
 
 
 def timer(system):
-    if(system.ready.cpu_is_empty):
-        return
-    
-    print("How long has the current process been using the CPU?:", end=' ')
-    try:
-        t = float(input().strip())
-        if t < 0:
-            print("Can't be negative. Try again.")
-            timer()
-        else:
-            system.ready.rq[0].add_time(t)
-    except ValueError:
-        print("Error, try again.")
-        timer(system)
-    except KeyboardInterrupt:
-        print()
-        cleanup()
-        exit()  # If Ctrl-C, just exit.
-    except EOFError:
-        print()
-        cleanup()
-        exit()  # If Ctrl-D, just exit.
+    if system.ready.cpu:
+        print("How long has the current process been using the CPU?:", end=' ')
+        try:
+            t = float(input().strip())
+            if t < 0:
+                print("Can't be negative. Try again.")
+                timer()
+            else:
+                system.ready.cpu[0].add_time(t)
+        except ValueError:
+            print("Error, try again.")
+            timer(system)
+        except KeyboardInterrupt:
+            print()
+            cleanup()
+            exit()  # If Ctrl-C, just exit.
+        except EOFError:
+            print()
+            cleanup()
+            exit()  # If Ctrl-D, just exit.
 
 def snapshot_mode(system):
     print("Valid inputs: c, d, p, r")
@@ -72,16 +70,19 @@ def snapshot_mode(system):
 
 
 def snapshot(system):
+    timer(system)
     snapshot_mode(system)
     return
 
 
 def terminate(system):
+    timer(system)
     system.ready.remove()
     return
 
 
 def arrival(system):
+    timer(system)
     pcb = PCB()
     system.ready.add(pcb)
     return
@@ -109,6 +110,7 @@ def signal(letter, system):
 
 def send_to_device(command, system):
     if command[0] == 'c':
+        timer(system)
         if system.ready.cpu_is_empty():
             print("There isn't a process running.")
         elif int(command[1:]) > system.get_num_cdrw() - 1:
@@ -126,6 +128,7 @@ def send_to_device(command, system):
             print("Process sent to %s." % command)
             system.ready.remove()
     elif command[0] == 'd':
+        timer(system)
         if system.ready.cpu_is_empty():
             print("There isn't a process running.")
         elif int(command[1:]) > system.get_num_disks() - 1:
@@ -144,6 +147,7 @@ def send_to_device(command, system):
             print("Process sent to %s." % command)
             system.ready.remove()
     elif command[0] == 'p':
+        timer(system)
         if system.ready.cpu_is_empty():
             print("There isn't a process running.")
         elif int(command[1:]) > system.get_num_printers() - 1:
@@ -161,46 +165,58 @@ def send_to_device(command, system):
 
 def complete_process(command, system):
     if command[0] == 'C':
-        if int(command[1:]) > system.get_num_cdrw() - 1:
-            print("Bad index. Remember we count from 0.")
-        elif not system.discs[int(command[1:])]:
-            print("Nothing in queue!")
-            return
-        else:
-            process = system.discs[int(command[1:])].top()
-            process.set_rw('')
-            system.ready.add(process)
-            if system.discs[int(command[1:])].remove() is not False:
-                print("Process complete! Moved to back of ready queue.")
+        timer(system)
+        try:
+            if int(command[1:]) > system.get_num_cdrw() - 1:
+                print("Bad index. Remember we count from 0.")
+            elif not system.discs[int(command[1:])]:
+                print("Nothing in queue!")
+                return
             else:
-                print("No process in queue!")
+                process = system.discs[int(command[1:])].top()
+                process.set_rw('')
+                system.ready.add(process)
+                if system.discs[int(command[1:])].remove() is not False:
+                    print("Process complete! Moved to back of ready queue.")
+                else:
+                    print("No process in queue!")
+        except AttributeError:
+            pass
     if command[0] == 'D':
-        if int(command[1:]) > system.get_num_cdrw() - 1:
-            print("Bad index. Remember we count from 0.")
-        elif not system.discs[int(command[1:])]:
-            print("Nothing in queue!")
-            return
-        else:
-            process = system.disks[int(command[1:])].top()
-            process.set_rw('')
-            system.ready.add(process)
-            if system.disks[int(command[1:])].remove() is not False:
-                print("Process complete! Moved to back of ready queue.")
+        timer(system)
+        try:
+            if int(command[1:]) > system.get_num_cdrw() - 1:
+                print("Bad index. Remember we count from 0.")
+            elif not system.discs[int(command[1:])]:
+                print("Nothing in queue!")
+                return
             else:
-                print("No process in queue!")
+                process = system.disks[int(command[1:])].top()
+                process.set_rw('')
+                system.ready.add(process)
+                if system.disks[int(command[1:])].remove() is not False:
+                    print("Process complete! Moved to back of ready queue.")
+                else:
+                    print("No process in queue!")
+        except AttributeError:
+            pass
     if command[0] == 'P':
-        if int(command[1:]) > system.get_num_cdrw() - 1:
-            print("Bad index. Remember we count from 0.")
-        elif not system.printers[int(command[1:])]:
-            print("Nothing in queue!")
-        else:
-            process = system.discs[int(command[1:])].top()
-            process.set_rw('')
-            system.ready.add(process)
-            if system.printers[int(command[1:])].remove() is not False:
-                print("Process complete! Moved to back of ready queue.")
+        timer(system)
+        try:
+            if int(command[1:]) > system.get_num_cdrw() - 1:
+                print("Bad index. Remember we count from 0.")
+            elif not system.printers[int(command[1:])]:
+                print("Nothing in queue!")
             else:
-                print("No process in queue!")
+                process = system.discs[int(command[1:])].top()
+                process.set_rw('')
+                system.ready.add(process)
+                if system.printers[int(command[1:])].remove() is not False:
+                    print("Process complete! Moved to back of ready queue.")
+                else:
+                    print("No process in queue!")
+        except AttributeError:
+            pass
 
 """
 These are functions that will match inputs with regular expressions
