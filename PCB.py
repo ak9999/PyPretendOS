@@ -23,7 +23,7 @@ class ProcessControlBlock:
         self.pid = None
         self.memstart = None
         self.memend = None
-        self.rw = None
+        self.rw = ''
         self.filename = None
         self.file_length = None
         create_block(self)
