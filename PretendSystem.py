@@ -34,6 +34,8 @@ class PretendSystem:
         self.num_disc_drives = 0
         self.num_CPUs = 1  # For now we assume there is only one CPU.
         self.num_processes = 0
+        self.alpha = None  # History parameter.
+        self.tau = None
         #  Initialize queues.
         self.printers = list()
         self.disks = list()
@@ -43,8 +45,27 @@ class PretendSystem:
         self.sys_gen()  # Call sys_gen upon instantiation
 
     """
-    Setter methods to set the number of hardware components.
+    Setter methods.
     """
+    def set_hist_param(self):
+        print("Enter the history parameter (α, 0 ≤ α ≤ 1):", end=' ')
+        try:
+            self.alpha = float(input().strip())
+            if self.alpha > 1 or self.alpha < 0:
+                print("The history parameter must be α, 0 ≤ α ≤ 1. Try again.")
+                self.set_hist_param()
+        except ValueError:
+            print("Error, try again.")
+            self.set_num_disks()
+        except KeyboardInterrupt:
+            print()
+            cleanup()
+            exit()  # If Ctrl-C, just exit.
+        except EOFError:
+            print()
+            cleanup()
+            exit()  # If Ctrl-D, just exit.
+
     def set_num_disks(self):
         print("Enter the number of disks:", end=' ')
         try:
@@ -129,10 +150,14 @@ class PretendSystem:
         self.set_num_disks()
         self.set_num_printers()
         self.set_num_cdrw()
+        self.set_hist_param()
 
     """
-    Getter methods to retrieve the hardware components.
+    Getter methods.
     """
+    def get_hist_param(self):
+        return self.alpha
+
     def get_num_disks(self):
         return self.num_disks
 
