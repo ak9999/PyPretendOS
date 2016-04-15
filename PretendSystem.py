@@ -44,6 +44,8 @@ class PretendSystem:
         #  System generation.
         self.sys_gen()  # Call sys_gen upon instantiation
 
+        self.total_cpu = 0
+
     """
     Setter methods.
     """
