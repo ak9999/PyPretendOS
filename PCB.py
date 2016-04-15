@@ -170,7 +170,7 @@ class ProcessControlBlock:
                      str(self.rw).rjust(3),
                      str(self.file_length).rjust(5),
                      str(self.cpu_total).rjust(3),
-                     str(self.avg_burst).rjust(3),))
+                     str(self.avg_burst).rjust(3)))
 
         print(string)
 
