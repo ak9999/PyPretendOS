@@ -22,14 +22,15 @@ class DeviceQueue:
     def remove(self):
         try:
             self.q.popleft()
+            return True
         except IndexError:
-            print("Nothing to remove!")
+            return False
 
     def top(self):
         try:
             return self.q[0]
         except IndexError:
-            print("Nothing to remove!")
+            return False
 
     def get_number(self):
         return self.number
@@ -60,7 +61,26 @@ class DiskQueue(DeviceQueue):
     def __init__(self):
         DeviceQueue.__init__(self)
         self.device_name = "d" + str(self.get_number())
+        self.cylinders = None
 
+    def set_cylinders(self):
+        print("Enter number of disk cylinders:", end=' ')
+        try:
+            self.cylinders = int(input().strip())
+            if self.cylinders <= 1000:
+                print("Must be greater than 1000.")
+                self.set_cylinders()
+        except ValueError:
+            print("Error, try again.")
+            self.set_cylinders()
+        except KeyboardInterrupt:
+            print()
+            cleanup()
+            exit()  # If Ctrl-C, just exit.
+        except EOFError:
+            print()
+            cleanup()
+            exit()  # If Ctrl-D, just exit.
 
 class PrinterQueue(DeviceQueue):
     def __init__(self):
