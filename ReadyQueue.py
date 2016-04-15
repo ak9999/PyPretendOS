@@ -61,7 +61,7 @@ class ReadyQueue:
     def print_queue(self):
         self.print_cpu()
         print("Ready Queue")
-        print("PID\tCPU Time\tBurst")
+        print("PID\tMemstart CPU Time\tBurst")
         for blocks in self.rq:
             blocks.print_ready()
 

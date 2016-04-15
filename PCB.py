@@ -26,7 +26,8 @@ class ProcessControlBlock:
         self.rw = ''
         self.filename = None
         self.file_length = 0
-        self.location = 0  # This is the cylinder the data is on if PCB is going to disk.
+        # This is the cylinder the data is on if PCB is going to disk.
+        self.location = 0
         self.cpu_total = 0
         self.avg_burst = 0
         self.bursts = list()
@@ -149,14 +150,16 @@ class ProcessControlBlock:
             for x in self.bursts:
                 avgbursts += x
             avgbursts /= len(self.bursts)
+        self.avg_burst = avgbursts
         return avgbursts
 
     def print_ready(self):
         string = ("%s\t%s\t%s\t%s"
                   % (str(self.pid).rjust(3),
-                     str(self.memstart).rjust(8),
-                     str(self.cpu_total(3)),
-                     str(self.avg_burst).rjust(3)))
+                     str(self.memstart).rjust(5),
+                     str(self.cpu_total).rjust(3),
+                     str(self.get_avgburst()).rjust(3),))
+
         print(string)
 
     def print_device(self):
@@ -182,6 +185,7 @@ class ProcessControlBlock:
                      str(self.avg_burst).rjust(3),
                      str(self.location).rjust(3)))
         print(string)
+
 
 def create_block(block):
     block.set_file_length()
