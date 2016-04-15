@@ -145,6 +145,7 @@ def complete_process(command, system):
             return
         else:
             process = system.discs[int(command[1:])].top()
+            process.set_rw('')
             system.ready.add(process)
             if system.discs[int(command[1:])].remove() is not False:
                 print("Process complete! Moved to back of ready queue.")
@@ -158,6 +159,7 @@ def complete_process(command, system):
             return
         else:
             process = system.disks[int(command[1:])].top()
+            process.set_rw('')
             system.ready.add(process)
             if system.disks[int(command[1:])].remove() is not False:
                 print("Process complete! Moved to back of ready queue.")
@@ -170,6 +172,7 @@ def complete_process(command, system):
             print("Nothing in queue!")
         else:
             process = system.discs[int(command[1:])].top()
+            process.set_rw('')
             system.ready.add(process)
             if system.printers[int(command[1:])].remove() is not False:
                 print("Process complete! Moved to back of ready queue.")
