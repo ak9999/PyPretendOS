@@ -16,8 +16,12 @@ def leave():
 
 
 def tau_next(system):
-    t_next = (1 - system.alpha) * system.tau + (system.alpha * system.tau)
-    system.tau = t_next
+    try:
+        t_next = (1 - system.alpha) * system.tau + (system.alpha * system.tau)
+        system.ready.cpu[0].bursts.append(system.tau)
+        system.tau = t_next
+    except IndexError:
+        print("Nothing in the queue. Disregarded.")
 
 def timer(system):
     if system.ready.cpu:
@@ -28,7 +32,10 @@ def timer(system):
                 print("Can't be negative. Try again.")
                 timer()
             else:
-                system.ready.cpu[0].add_time(t)
+                try:
+                    system.ready.cpu[0].add_time(t)
+                except IndexError:
+                    print("Nothing in the queue. Disregarded.")
         except ValueError:
             print("Error, try again.")
             timer(system)
@@ -40,6 +47,8 @@ def timer(system):
             print()
             cleanup()
             exit()  # If Ctrl-D, just exit.
+    else:
+        print("Nothing in CPU.")
 
 def snapshot_mode(system):
     print("Valid inputs: c, d, p, r")
@@ -55,15 +64,19 @@ def snapshot_mode(system):
 
         if valid_signal(command):
             if command[0] == "r":
+                print("System average total CPU time: " + str(system.total_avg))
                 system.ready.print_queue()
                 return
             elif command[0] == "c":
+                print("System average total CPU time: " + str(system.total_avg))
                 system.print_device(system.discs)
                 return
             elif command[0] == "d":
+                print("System average total CPU time: " + str(system.total_avg))
                 system.print_device(system.disks)
                 return
             elif command[0] == "p":
+                print("System average total CPU time: " + str(system.total_avg))
                 system.print_device(system.printers)
                 return
             else:
@@ -84,16 +97,24 @@ def terminate(system):
     timer(system)
     tau_next(system)
     system.totals.append(system.ready.cpu[0].cpu_total)
+    for a in system.totals:
+        system.total_cpu += a
     system.sysavg()
+    average = system.ready.cpu[0].cpu_total / system.total_cpu
+    system.total_avg = average
+    print("Report:")
+    print("PID: " + str(system.ready.cpu[0].get_pid()))
+    print("Average burst time: " + str(system.ready.cpu[0].get_avgburst()))
+    print("Total CPU time: " + str(system.ready.cpu[0].cpu_total))
     system.ready.remove()
     return
 
 
 def arrival(system):
-    timer(system)
-    tau_next(system)
     pcb = PCB()
     system.ready.add(pcb)
+    timer(system)
+    tau_next(system)
     return
 
 
@@ -113,8 +134,7 @@ def signal(letter, system):
         function = switch_case.get(letter)
         return function(system)  # Return the function and execute it.
     else:
-        #print("Bad input.")  # maybe send to device here
-        return
+        pass
 
 
 def send_to_device(command, system):
