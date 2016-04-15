@@ -61,14 +61,19 @@ class ReadyQueue:
     def print_queue(self):
         self.print_cpu()
         print("Ready Queue")
-        print("PID\t Memstart\t File Length\t")
+        print("PID\tCPU Time\tBurst")
         for blocks in self.rq:
             blocks.print_ready()
 
+
     def print_cpu(self):
         print("Current job in CPU")
-        print("PID\t Memstart\t File Length\t")
+        print("PID\tCPU Time\tBurst")
         try:
-            print(self.cpu[0])
+            string = ("%s\t%s\t%s"
+                      % (str(self.cpu[0].pid).rjust(3),
+                         str(self.cpu[0].cpu_total).rjust(8),
+                         str(self.cpu[0].avg_burst).rjust(3)))
+            print(string)
         except IndexError:
             return
