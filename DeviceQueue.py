@@ -164,7 +164,7 @@ class DiskQueue(DeviceQueue):
             else:
                 for reqs in range(0, len(self.r)):
                     string = ("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s"
-                              % str(self.r[reqs].pid).rjust(3),
+                            % str(self.r[reqs].pid).rjust(3),
                               str(self.r[reqs].filename).rjust(5),
                               str(self.r[reqs].memstart).rjust(5),
                               str(self.r[reqs].rw).rjust(3),

@@ -51,6 +51,7 @@ class PretendSystem:
     """
     Setter methods.
     """
+
     def set_tau(self, num):
         try:
             self.tau = num
@@ -175,6 +176,7 @@ class PretendSystem:
     This is the sys_gen function, where I ask how many of each piece of hardware
     there is. For now I assume there is only ONE CPU.
     '''
+
     def sys_gen(self):
         print("Welcome to Totally Not UNIX!", end='\n')
         print()
@@ -188,6 +190,7 @@ class PretendSystem:
     """
     Getter methods.
     """
+
     def get_tau(self):
         return self.tau
 
@@ -229,6 +232,7 @@ class PretendSystem:
     """
     This is so we can easily print out the system details.
     """
+
     def __str__(self):
         string = ""
         string += "# CPUs: " + str(self.num_CPUs) + "\n" \
