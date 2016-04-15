@@ -8,7 +8,6 @@ import re
 from PretendSystem import cleanup
 from PCB import ProcessControlBlock as PCB
 
-
 def leave():
     print()
     cleanup()
@@ -16,12 +15,13 @@ def leave():
 
 
 def tau_next(system):
+    t_next = (1 - system.alpha) * system.tau + (system.alpha * system.tau)
     try:
-        t_next = (1 - system.alpha) * system.tau + (system.alpha * system.tau)
         system.ready.cpu[0].bursts.append(system.tau)
         system.tau = t_next
+        system.ready.cpu[0].add_time(t_next)
     except IndexError:
-        print("Nothing in the queue. Disregarded.")
+        print("Nothing in the queue. tau_next not saved.")
 
 def timer(system):
     if system.ready.cpu:
@@ -53,7 +53,6 @@ def timer(system):
 def snapshot_mode(system):
     print("Valid inputs: c, d, p, r")
     while True:
-        print("Options: c, d, p")
         print("S-", end="")
         try:
             command = input()
@@ -63,20 +62,18 @@ def snapshot_mode(system):
             leave()
 
         if valid_signal(command):
+            system.sysavg()
+            print("System average total CPU time: " + str(system.total_avg))
             if command[0] == "r":
-                print("System average total CPU time: " + str(system.total_avg))
                 system.ready.print_queue()
                 return
             elif command[0] == "c":
-                print("System average total CPU time: " + str(system.total_avg))
                 system.print_device(system.discs)
                 return
             elif command[0] == "d":
-                print("System average total CPU time: " + str(system.total_avg))
                 system.print_device(system.disks)
                 return
             elif command[0] == "p":
-                print("System average total CPU time: " + str(system.total_avg))
                 system.print_device(system.printers)
                 return
             else:
