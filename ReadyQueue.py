@@ -61,13 +61,13 @@ class ReadyQueue:
     def print_queue(self):
         self.print_cpu()
         print("Ready Queue")
-        print("PID\t Filename\t Memstart\t R/W\t File Length\t")
+        print("PID\t Memstart\t File Length\t")
         for blocks in self.rq:
-            print(blocks)
+            blocks.print_ready()
 
     def print_cpu(self):
         print("Current job in CPU")
-        print("PID\t Filename\t Memstart\t R/W\t File Length\t")
+        print("PID\t Memstart\t File Length\t")
         try:
             print(self.cpu[0])
         except IndexError:
