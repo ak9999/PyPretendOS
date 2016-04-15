@@ -133,8 +133,22 @@ class DiskQueue(DeviceQueue):
         if not self.q:
             print("Nothing in device queue.")
             return
-        for block in self.q:
-            block.print_disk()
+        if self.is_empty():
+            return
+        else:
+            if not self.frozen:
+                print("Pending requests.")
+                for reqs in self.q:
+                    string = ("%s\t%s\t%s\t%s\t%s\t%s\t%s"
+                        % str(self.q[reqs].pid).rjust(3),
+                              str(self.q[reqs].filename).rjust(5),
+                              str(self.q[reqs].memstart).rjust(5),
+                              str(self.q[reqs].rw).rjust(3),
+                              str(self.q[reqs].file_length).rjust(5),
+                              str(self.q[reqs].cpu_total).rjust(3),
+                              str(self.q[reqs].avg_burst).rjust(3),
+                              str(self.q[reqs].location).rjust(3))
+                    print(string)
 
     def fscan_sort(self):
         q_list = list(self.q)
@@ -148,17 +162,17 @@ class DiskQueue(DeviceQueue):
         if q_len > 1:
             for i in range(1, q_len):
                 j = i
-                while(j > 0 and self.get_cylinder(self.q_list[j]) <= self.get_cylinder(self.q_list[j-1])):
-                    if self.get_cylinder(self.q_list[j]) == self.get_cylinder(self.q_list[j-1]) and self.get_PID(self.q_list[j]) < self.get_PID(self.q_list[j-1]):
-                        self.q_list[j], self.q_list[j-1] = self.q_list[j-1], self.q_list[j]
+                while(j > 0 and self.get_cylinder(q_list[j]) <= self.get_cylinder(q_list[j-1])):
+                    if self.get_cylinder(q_list[j]) == self.get_cylinder(q_list[j-1]) and self.get_PID(q_list[j]) < self.get_PID(q_list[j-1]):
+                        q_list[j], q_list[j-1] = q_list[j-1], q_list[j]
                         j -= 1
                         continue
         if r_len > 1:
             for i in range(1, r_len):
                 j = i
-                while (j > 0 and self.get_cylinder(self.r_list[j]) <= self.get_cylinder(self.r_list[j - 1])):
-                    if self.get_cylinder(self.r_list[j]) == self.get_cylinder(self.r_list[j - 1]) and self.get_PID(self.r_list[j]) < self.get_PID(self.r_list[j - 1]):
-                        self.r_list[j], self.r_list[j - 1] = self.r_list[j - 1], self.r_list[j]
+                while (j > 0 and self.get_cylinder(r_list[j]) <= self.get_cylinder(r_list[j - 1])):
+                    if self.get_cylinder(r_list[j]) == self.get_cylinder(r_list[j - 1]) and self.get_PID(r_list[j]) < self.get_PID(r_list[j - 1]):
+                        r_list[j], r_list[j - 1] = r_list[j - 1], r_list[j]
                         j -= 1
                         continue
 
