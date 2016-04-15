@@ -15,6 +15,10 @@ def leave():
     exit()
 
 
+def tau_next(system):
+    t_next = (1 - system.alpha) * system.tau + (system.alpha * system.tau)
+    system.tau = t_next
+
 def timer(system):
     if system.ready.cpu:
         print("How long has the current process been using the CPU?:", end=' ')
@@ -71,18 +75,23 @@ def snapshot_mode(system):
 
 def snapshot(system):
     timer(system)
+    tau_next(system)
     snapshot_mode(system)
     return
 
 
 def terminate(system):
     timer(system)
+    tau_next(system)
+    system.totals.append(system.ready.cpu[0].cpu_total)
+    system.sysavg()
     system.ready.remove()
     return
 
 
 def arrival(system):
     timer(system)
+    tau_next(system)
     pcb = PCB()
     system.ready.add(pcb)
     return
@@ -111,6 +120,7 @@ def signal(letter, system):
 def send_to_device(command, system):
     if command[0] == 'c':
         timer(system)
+        tau_next(system)
         if system.ready.cpu_is_empty():
             print("There isn't a process running.")
         elif int(command[1:]) > system.get_num_cdrw() - 1:
@@ -129,6 +139,7 @@ def send_to_device(command, system):
             system.ready.remove()
     elif command[0] == 'd':
         timer(system)
+        tau_next(system)
         if system.ready.cpu_is_empty():
             print("There isn't a process running.")
         elif int(command[1:]) > system.get_num_disks() - 1:
@@ -148,6 +159,7 @@ def send_to_device(command, system):
             system.ready.remove()
     elif command[0] == 'p':
         timer(system)
+        tau_next(system)
         if system.ready.cpu_is_empty():
             print("There isn't a process running.")
         elif int(command[1:]) > system.get_num_printers() - 1:
@@ -166,6 +178,7 @@ def send_to_device(command, system):
 def complete_process(command, system):
     if command[0] == 'C':
         timer(system)
+        tau_next(system)
         try:
             if int(command[1:]) > system.get_num_cdrw() - 1:
                 print("Bad index. Remember we count from 0.")
@@ -184,6 +197,7 @@ def complete_process(command, system):
             pass
     if command[0] == 'D':
         timer(system)
+        tau_next(system)
         try:
             if int(command[1:]) > system.get_num_cdrw() - 1:
                 print("Bad index. Remember we count from 0.")
@@ -202,6 +216,7 @@ def complete_process(command, system):
             pass
     if command[0] == 'P':
         timer(system)
+        tau_next(system)
         try:
             if int(command[1:]) > system.get_num_cdrw() - 1:
                 print("Bad index. Remember we count from 0.")
