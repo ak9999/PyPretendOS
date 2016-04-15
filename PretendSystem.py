@@ -56,6 +56,7 @@ class PretendSystem:
                 for _ in range(0, self.num_disks):
                     dq = DiskQueue()
                     dq.set_number(_)
+                    dq.set_cylinders(_)
                     self.disks.append(dq)
         except ValueError:
             print("Error, try again.")
