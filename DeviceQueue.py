@@ -63,16 +63,16 @@ class DiskQueue(DeviceQueue):
         self.device_name = "d" + str(self.get_number())
         self.cylinders = None
 
-    def set_cylinders(self):
-        print("Enter number of disk cylinders:", end=' ')
+    def set_cylinders(self, num):
+        print("Disk " + str(num) + ": Enter number of disk cylinders:", end=' ')
         try:
             self.cylinders = int(input().strip())
             if self.cylinders <= 1000:
                 print("Must be greater than 1000.")
-                self.set_cylinders()
+                self.set_cylinders(num)
         except ValueError:
             print("Error, try again.")
-            self.set_cylinders()
+            self.set_cylinders(num)
         except KeyboardInterrupt:
             print()
             cleanup()
