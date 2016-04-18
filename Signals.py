@@ -5,65 +5,16 @@ Description: Handles making sure system calls and interrupts are valid.
 """
 
 import re
-from PretendSystem import cleanup
 from PCB import ProcessControlBlock as PCB
 
-def leave():
-    print()
-    cleanup()
-    exit()
-
-
-def tau_next(system):
-    t_next = (1 - system.alpha) * system.tau + (system.alpha * system.tau)
-    try:
-        system.ready.cpu[0].bursts.append(system.tau)
-        system.tau = t_next
-        system.ready.cpu[0].add_time(t_next)
-    except IndexError:
-        print("Nothing in the queue. tau_next not saved.")
-
-def timer(system):
-    if system.ready.cpu:
-        print("How long has the current process been using the CPU?:", end=' ')
-        try:
-            t = float(input().strip())
-            if t < 0:
-                print("Can't be negative. Try again.")
-                timer()
-            else:
-                try:
-                    system.ready.cpu[0].add_time(t)
-                except IndexError:
-                    print("Nothing in the queue. Disregarded.")
-        except ValueError:
-            print("Error, try again.")
-            timer(system)
-        except KeyboardInterrupt:
-            print()
-            cleanup()
-            exit()  # If Ctrl-C, just exit.
-        except EOFError:
-            print()
-            cleanup()
-            exit()  # If Ctrl-D, just exit.
-    else:
-        print("Nothing in CPU.")
 
 def snapshot_mode(system):
     print("Valid inputs: c, d, p, r")
     while True:
         print("S-", end="")
-        try:
-            command = input()
-        except KeyboardInterrupt:
-            leave()
-        except EOFError:
-            leave()
+        command = input()
 
         if valid_signal(command):
-            system.sysavg()
-            print("System average total CPU time: " + str(system.total_avg))
             if command[0] == "r":
                 system.ready.print_queue()
                 return
@@ -84,25 +35,11 @@ def snapshot_mode(system):
 
 
 def snapshot(system):
-    timer(system)
-    tau_next(system)
     snapshot_mode(system)
     return
 
 
 def terminate(system):
-    timer(system)
-    tau_next(system)
-    system.totals.append(system.ready.cpu[0].cpu_total)
-    for a in system.totals:
-        system.total_cpu += a
-    system.sysavg()
-    average = system.ready.cpu[0].cpu_total / system.total_cpu
-    system.total_avg = average
-    print("Report:")
-    print("PID: " + str(system.ready.cpu[0].get_pid()))
-    print("Average burst time: " + str(system.ready.cpu[0].get_avgburst()))
-    print("Total CPU time: " + str(system.ready.cpu[0].cpu_total))
     system.ready.remove()
     return
 
@@ -110,8 +47,6 @@ def terminate(system):
 def arrival(system):
     pcb = PCB()
     system.ready.add(pcb)
-    timer(system)
-    tau_next(system)
     return
 
 
@@ -136,8 +71,6 @@ def signal(letter, system):
 
 def send_to_device(command, system):
     if command[0] == 'c':
-        timer(system)
-        tau_next(system)
         if system.ready.cpu_is_empty():
             print("There isn't a process running.")
         elif int(command[1:]) > system.get_num_cdrw() - 1:
@@ -155,8 +88,6 @@ def send_to_device(command, system):
             print("Process sent to %s." % command)
             system.ready.remove()
     elif command[0] == 'd':
-        timer(system)
-        tau_next(system)
         if system.ready.cpu_is_empty():
             print("There isn't a process running.")
         elif int(command[1:]) > system.get_num_disks() - 1:
@@ -175,8 +106,6 @@ def send_to_device(command, system):
             print("Process sent to %s." % command)
             system.ready.remove()
     elif command[0] == 'p':
-        timer(system)
-        tau_next(system)
         if system.ready.cpu_is_empty():
             print("There isn't a process running.")
         elif int(command[1:]) > system.get_num_printers() - 1:
@@ -194,8 +123,6 @@ def send_to_device(command, system):
 
 def complete_process(command, system):
     if command[0] == 'C':
-        timer(system)
-        tau_next(system)
         try:
             if int(command[1:]) > system.get_num_cdrw() - 1:
                 print("Bad index. Remember we count from 0.")
@@ -213,8 +140,6 @@ def complete_process(command, system):
         except AttributeError:
             pass
     if command[0] == 'D':
-        timer(system)
-        tau_next(system)
         try:
             if int(command[1:]) > system.get_num_cdrw() - 1:
                 print("Bad index. Remember we count from 0.")
@@ -232,8 +157,6 @@ def complete_process(command, system):
         except AttributeError:
             pass
     if command[0] == 'P':
-        timer(system)
-        tau_next(system)
         try:
             if int(command[1:]) > system.get_num_cdrw() - 1:
                 print("Bad index. Remember we count from 0.")
@@ -268,7 +191,6 @@ def valid_device(pattern):
     Return whether the pattern is a valid device
     """
     return re.compile(r"^[cdp][0-9]{1}$").match(pattern) is not None
-
 
 def valid_complete(pattern):
     return re.compile(r"^[CDP][0-9]{1}$").match(pattern) is not None

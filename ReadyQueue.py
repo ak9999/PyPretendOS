@@ -55,29 +55,6 @@ class ReadyQueue:
         return
 
     def print_queue(self):
-        self.print_cpu()
         print("Ready Queue")
-        print("PID\tMemstart CPU Time\tBurst")
-        for blocks in self.rq:
-            blocks.print_ready()
-
-
-    def print_cpu(self):
-        print("Current job in CPU")
-        print("PID\tCPU Time\tBurst")
-        try:
-            string = ("%s\t%s\t%s"
-                      % (str(self.cpu[0].pid).rjust(3),
-                         str(self.cpu[0].cpu_total).rjust(8),
-                         str(self.cpu[0].avg_burst).rjust(3)))
-            print(string)
-        except IndexError:
-            return
-
-    def sjf_sort(self, alpha, tau):
-        ready_list = list(self.rq)
-        for pcb in range(1, len(ready_list)):
-            if ready_list[pcb-1].cpu_total < ready_list[pcb].cpu_total:
-                ready_list[pcb-1], ready_list[pcb] = ready_list[pcb], ready_list[pcb-1]
-            elif ready_list[pcb-1].cpu_total == ready_list[pcb].cpu_total:
-                ready_list[pcb-1].pid, ready_list[pcb].pid = ready_list[pcb], ready_list[pcb-1]
+        for pcb in self.rq:
+            pcb.print_block()

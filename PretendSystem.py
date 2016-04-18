@@ -8,18 +8,6 @@ hardware (CPUs, printers, hard disks, CD/RW drives) are available.
 
 from ReadyQueue import ReadyQueue as RQ
 from DeviceQueue import *
-"""
-cleanup() is needed because Python compiles imported files to bytecode and caches them.
-These .pyc files are stored in __pycache__, we can just ignore them.
-"""
-
-
-def cleanup():  # Clean up the pycache
-    import shutil
-    try:
-        shutil.rmtree("__pycache__")
-    except FileNotFoundError:
-        return
 
 """
 This is a large mess of functions that will handle the operating system.
@@ -34,8 +22,6 @@ class PretendSystem:
         self.num_disc_drives = 0
         self.num_CPUs = 1  # For now we assume there is only one CPU.
         self.num_processes = 0
-        self.alpha = None  # History parameter.
-        self.tau = None
         #  Initialize queues.
         self.printers = list()
         self.disks = list()
@@ -43,10 +29,6 @@ class PretendSystem:
         self.ready = RQ()
         #  System generation.
         self.sys_gen()  # Call sys_gen upon instantiation
-
-        self.total_cpu = 0
-        self.totals = list()
-        self.total_avg = 0
 
     """
     Setter methods.
@@ -68,17 +50,9 @@ class PretendSystem:
                 self.set_init_burst()
             if self.set_tau(t) is False:
                 print("Error setting initial burst.")
-        except ValueError:
+        except (ValueError, EOFError):
             print("Error, try again.")
             self.set_init_burst()
-        except KeyboardInterrupt:
-            print()
-            cleanup()
-            exit()  # If Ctrl-C, just exit.
-        except EOFError:
-            print()
-            cleanup()
-            exit()  # If Ctrl-D, just exit.
 
     def set_hist_param(self):
         print("Enter the history parameter (α, 0 ≤ α ≤ 1):", end=' ')
@@ -87,17 +61,9 @@ class PretendSystem:
             if self.alpha > 1 or self.alpha < 0:
                 print("The history parameter must be α, 0 ≤ α ≤ 1. Try again.")
                 self.set_hist_param()
-        except ValueError:
+        except (ValueError, EOFError):
             print("Error, try again.")
             self.set_hist_param()
-        except KeyboardInterrupt:
-            print()
-            cleanup()
-            exit()  # If Ctrl-C, just exit.
-        except EOFError:
-            print()
-            cleanup()
-            exit()  # If Ctrl-D, just exit.
 
     def set_num_disks(self):
         print("Enter the number of disks:", end=' ')
@@ -112,17 +78,9 @@ class PretendSystem:
                     dq.set_number(_)
                     dq.set_cylinders(_)
                     self.disks.append(dq)
-        except ValueError:
+        except (ValueError, EOFError):
             print("Error, try again.")
             self.set_num_disks()
-        except KeyboardInterrupt:
-            print()
-            cleanup()
-            exit()  # If Ctrl-C, just exit.
-        except EOFError:
-            print()
-            cleanup()
-            exit()  # If Ctrl-D, just exit.
 
     def set_num_printers(self):
         print("Enter the number of printers:", end=' ')
@@ -136,17 +94,9 @@ class PretendSystem:
                     dq = PrinterQueue()
                     dq.set_number(_)
                     self.printers.append(dq)
-        except ValueError:
+        except (ValueError, EOFError):
             print("Error, try again.")
             self.set_num_printers()
-        except KeyboardInterrupt:
-            print()
-            cleanup()
-            exit()  # If Ctrl-C, just exit.
-        except EOFError:
-            print()
-            cleanup()
-            exit()  # If Ctrl-D, just exit.
 
     def set_num_cdrw(self):
         print("Enter the number of CD/RW drives:", end=' ')
@@ -160,17 +110,9 @@ class PretendSystem:
                     dq = DiscQueue()
                     dq.set_number(_)
                     self.discs.append(dq)
-        except ValueError:
+        except (ValueError, EOFError):
             print("Error, try again.")
             self.set_num_cdrw()
-        except KeyboardInterrupt:
-            print()
-            cleanup()
-            exit()  # If Ctrl-C, just exit.
-        except EOFError:
-            print()
-            cleanup()
-            exit()  # If Ctrl-D, just exit.
 
     '''
     This is the sys_gen function, where I ask how many of each piece of hardware
@@ -178,68 +120,21 @@ class PretendSystem:
     '''
 
     def sys_gen(self):
-        print("Welcome to Totally Not UNIX!", end='\n')
+        print("Starting setup...")
         print()
-        print("Starting setup...", end="\n")
         self.set_num_disks()
         self.set_num_printers()
         self.set_num_cdrw()
-        self.set_hist_param()
-        self.set_init_burst()
-
-    """
-    Getter methods.
-    """
-
-    def get_tau(self):
-        return self.tau
-
-    def get_hist_param(self):
-        return self.alpha
-
-    def get_num_disks(self):
-        return self.num_disks
-
-    def get_num_printers(self):
-        return self.num_printers
-
-    def get_num_cdrw(self):
-        return self.num_disc_drives
-
-    def get_discs(self):
-        return self.discs
-
-    def get_disks(self):
-        return self.disks
-
-    def get_printers(self):
-        return self.printers
-
-    def print_device(self, device_list):
-        print("PID\tFilename\t Memstart R/W\tFile Length\tCPU Time\tBurst")
-        for x in range(len(device_list)):
-            print("Device: " + device_list[x].device_name + str(x))
-            device_list[x].print_device_queue()
-
-    def sysavg(self):
-        if len(self.totals) < 1:
-            return
-        else:
-            for x in self.totals:
-                self.total_avg += x
-            self.total_avg /= len(self.totals)
+        self.print_available_hardware()
 
     """
     This is so we can easily print out the system details.
     """
 
-    def __str__(self):
+    def print_available_hardware(self):
         string = ""
         string += "# CPUs: " + str(self.num_CPUs) + "\n" \
             + "# disks: " + str(self.num_disks) + "\n" \
             + "# printers: " + str(self.num_printers) + "\n" \
             + "# CDRW drives: " + str(self.num_disc_drives)
-        return string
-
-    def sjf(self):
-        self.ready.sjf_sort(self.alpha, self.tau)
+        print(string)

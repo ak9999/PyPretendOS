@@ -11,31 +11,22 @@ from PretendSystem import PretendSystem
 import Signals
 
 
-def leave():
-    print()
-    Signals.cleanup()
-    exit()
-
-
 def running():
     totally_real_system = PretendSystem()
     while True:
         print('$', end=' ')
         try:
             command = input()
-        except KeyboardInterrupt:
-            Signals.leave()
-        except EOFError:
-            Signals.leave()
+        except (KeyboardInterrupt, EOFError):
+            exit()
 
         if Signals.valid_signal(command):
             Signals.signal(command, totally_real_system)
-            totally_real_system.sjf()
         elif Signals.valid_device(command):
             Signals.send_to_device(command, totally_real_system)
         elif Signals.valid_complete(command):
             Signals.complete_process(command, totally_real_system)
-            totally_real_system.sjf()
+        else:
             pass
 
 
