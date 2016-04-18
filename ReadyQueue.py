@@ -18,6 +18,7 @@ class ReadyQueue:
     def __init__(self):
         self.rq = deque()  # Just make a deque.
         self.cpu = deque(maxlen=1)
+        self.banner = (" " * 4).join(["PID", "MEM", "R/W", "Filename", "Length", "Location"])
 
     def queue_is_empty(self):
         if self.rq:
@@ -61,6 +62,7 @@ class ReadyQueue:
 
     def print_queue(self):
         try:
+            print(self.banner)
             print("CPU")
             try:
                 print(self.cpu[0].print_block())
