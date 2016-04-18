@@ -40,7 +40,7 @@ class DeviceQueue:
         try:
             return self.q[0]
         except IndexError:
-            return False
+            pass
 
     def add_file_info(self, block):
         """Ask for additional attributes when moving process to DeviceQueue."""
