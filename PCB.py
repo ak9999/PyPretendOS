@@ -24,6 +24,7 @@ class ProcessControlBlock:
         self.rw = '-'
         self.filename = None
         self.file_length = 0
+        self.tau = None
         # This is the cylinder the data is on if PCB is going to disk.
         self.location = 0
         create_block(self)
@@ -59,7 +60,7 @@ class ProcessControlBlock:
     def set_memend(self):
         self.memend = self.memstart
         global available_address
-        available_address += self.file_length
+        available_address += 1
 
     def set_pid(self):
         global process_id
@@ -100,8 +101,6 @@ class ProcessControlBlock:
 
 def create_block(block):
     block.set_pid()
-    block.set_file_length()
-    block.set_file_name()
     block.set_memstart()
     block.set_memend()
     return block
