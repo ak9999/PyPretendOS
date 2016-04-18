@@ -114,6 +114,16 @@ class PretendSystem:
             print("Error, try again.")
             self.set_num_cdrw()
 
+    """Getters."""
+
+    def get_num_cdrw(self):
+        return self.num_disc_drives
+
+    def get_num_printers(self):
+        return self.num_printers
+
+    def get_num_disks(self):
+        return self.num_disks
     '''
     This is the sys_gen function, where I ask how many of each piece of hardware
     there is. For now I assume there is only ONE CPU.
@@ -138,3 +148,8 @@ class PretendSystem:
             + "# printers: " + str(self.num_printers) + "\n" \
             + "# CDRW drives: " + str(self.num_disc_drives)
         print(string)
+
+    def print_device(self, device_list):
+        for idx in range(len(device_list)):
+            print("Device: " + device_list[idx].device_name + str(idx))
+            device_list[idx].print_device_queue()
