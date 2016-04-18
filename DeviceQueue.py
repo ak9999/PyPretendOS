@@ -12,33 +12,40 @@ This is the generic device queue that will be inherited by the actual devices.
 
 
 class DeviceQueue:
+    # We need a banner at the top so we know what's going on.
+    banner = (" "*4).join(["PID", "MEM", "R/W", "Length"])
+
     def __init__(self):
         self.q = deque()
         self.number = None
         self.device_name = None
 
-    def add(self, block):  # Add Process Control Blocks to queue.
+    def __bool__(self):
+        """Implements truth testing to see whether the DeviceQueue has elements or not."""
+        return bool(self.q)
+
+    def add(self, block):
+        """Add Process Control Blocks to queue."""
         self.q.append(block)
 
-    def remove(self):
-        try:
-            self.q.popleft()
-            return True
-        except IndexError:
+    def pop(self):
+        """Pop item from the front of DeviceQueue, and return it."""
+        if self.q:
+            return self.q.popleft()
+        else:
             return False
 
     def top(self):
+        """Return whatever is at the front of the DeviceQueue."""
         try:
             return self.q[0]
         except IndexError:
             return False
 
-    def is_empty(self):
-        """Python 3 does not provide a method to return whether deques are empty."""
-        if not self.q:
-            return True
-        else:
-            return False
+    def add_file_info(self, block):
+        """Ask for additional attributes when moving process to DeviceQueue."""
+        block.set_file_name()
+        block.set_file_length()
 
     def get_number(self):
         return self.number
@@ -47,7 +54,7 @@ class DeviceQueue:
         self.number = num
 
     def task_complete(self):
-        if self.remove() is True:
+        if self.pop() is not False:
             print("Task completed.")
         else:
             print("Failure: Nothing to remove.")
@@ -57,7 +64,7 @@ class DeviceQueue:
             print("Nothing in device queue.")
             return
         for block in self.q:
-            block.print_device()
+            block.print_block()
 
 
 class DiscQueue(DeviceQueue):
