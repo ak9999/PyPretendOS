@@ -18,6 +18,7 @@ def running():
         try:
             command = input()
         except (KeyboardInterrupt, EOFError):
+            print()
             exit()
 
         if Signals.valid_signal(command):
