@@ -130,6 +130,8 @@ def complete_process(command, system):
             return
         else:
             process = system.discs[int(command[1:])].top()
+            # Set all the stuff back to default values.
+            # CPU knows nothing of file sizes and read/write.
             process.filename = None
             process.file_length = 0
             process.set_rw('-')
@@ -146,8 +148,11 @@ def complete_process(command, system):
             return
         else:
             process = system.disks[int(command[1:])].top()
+            # Set all the stuff back to default values.
+            # CPU knows nothing of file sizes and cylinders.
             process.filename = None
             process.file_length = 0
+            process.location = 0
             process.set_rw('-')
             system.ready.add(process)
             if system.disks[int(command[1:])].pop() is not False:
@@ -161,6 +166,8 @@ def complete_process(command, system):
             print("Nothing in queue!")
         else:
             process = system.printers[int(command[1:])].top()
+            # Set all the stuff back to default values.
+            # CPU knows nothing of file sizes and read/write.
             process.filename = None
             process.file_length = 0
             process.set_rw('-')
