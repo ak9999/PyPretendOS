@@ -76,18 +76,34 @@ class DiskQueue(DeviceQueue):
     def __init__(self):
         DeviceQueue.__init__(self)
         self.device_name = "d"
-        self.cylinders = None
+        self.num_cylinders = None
+        self.cylinders = deque(maxlen=self.num_cylinders)
 
-    def set_cylinders(self, num):
+    def set_num_cylinders(self, num):
         print("Disk " + str(num) + ": Enter number of disk cylinders:", end=' ')
         try:
-            self.cylinders = int(input().strip())
-            if self.cylinders < 0:
+            self.num_cylinders = int(input().strip())
+            if self.num_cylinders < 0:
                 print("Number of cylinders must be positive!")
-                self.set_cylinders(num)
+                self.set_num_cylinders(num)
         except (ValueError, EOFError):
             print("Error, try again.")
-            self.set_cylinders(num)
+            self.set_num_cylinders(num)
+
+    def add_file_info(self, block):
+        """Ask for additional attributes when moving process to DeviceQueue."""
+        block.set_file_name()
+        block.set_file_length()
+        block.set_cylinder()
+        if block.location not in self.cylinders:
+            if block.location < self.num_cylinders:
+                self.cylinders.append(block.location)
+            else:
+                print("Exceeded limit.")
+                self.add_file_info(block)
+        else:
+            print("That cylinder is not available.")
+            self.add_file_info(block)
 
 
 class PrinterQueue(DeviceQueue):

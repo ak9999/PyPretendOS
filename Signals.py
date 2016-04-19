@@ -77,7 +77,7 @@ def send_to_device(command, system):
             print("Bad index. Remember we count from 0.")
         else:
             process = system.ready.cpu[0]
-            process.set_file_name()
+            system.discs[int(command[1:])].add_file_info(process)
             print("Is this a read or write?:", end=" ")
             operation = str(input().strip()).lower()
             if not valid_readwrite(operation):
@@ -94,8 +94,7 @@ def send_to_device(command, system):
             print("Bad index. Remember we count from 0.")
         else:
             process = system.ready.cpu[0]
-            process.set_file_name()
-            process.set_cylinder()
+            system.disks[int(command[1:])].add_file_info(process)
             print("Is this a read or write?:", end=" ")
             operation = str(input().strip()).lower()
             if not valid_readwrite(operation):
@@ -112,7 +111,7 @@ def send_to_device(command, system):
             print("Bad index. Remember we count from 0.")
         else:
             process = system.ready.cpu[0]
-            process.set_file_name()
+            system.printers[int(command[1:])].add_file_info(process)
             process.set_rw("w")
             system.printers[int(command[1:])].add(process)
             print("Process sent to %s." % command)
