@@ -130,6 +130,8 @@ def complete_process(command, system):
             return
         else:
             process = system.discs[int(command[1:])].top()
+            process.filename = None
+            process.file_length = 0
             process.set_rw('-')
             system.ready.add(process)
             if system.discs[int(command[1:])].pop() is not False:
@@ -137,13 +139,15 @@ def complete_process(command, system):
             else:
                 print("No process in queue!")
     if command[0] == 'D':
-        if int(command[1:]) > system.get_num_cdrw() - 1:
+        if int(command[1:]) > system.get_num_disks() - 1:
             print("Bad index. Remember we count from 0.")
         elif not system.discs[int(command[1:])]:
             print("Nothing in queue!")
             return
         else:
             process = system.disks[int(command[1:])].top()
+            process.filename = None
+            process.file_length = 0
             process.set_rw('-')
             system.ready.add(process)
             if system.disks[int(command[1:])].pop() is not False:
@@ -151,13 +155,15 @@ def complete_process(command, system):
             else:
                 print("No process in queue!")
     if command[0] == 'P':
-        if int(command[1:]) > system.get_num_cdrw() - 1:
+        if int(command[1:]) > system.get_num_printers() - 1:
             print("Bad index. Remember we count from 0.")
         elif not system.printers[int(command[1:])]:
             print("Nothing in queue!")
         else:
             process = system.discs[int(command[1:])].top()
-            process.set_rw('-')
+            process.filename = None
+            process.file_length = 0
+            process.rw = '-'
             system.ready.add(process)
             if system.printers[int(command[1:])].pop() is not False:
                 print("Process complete! Moved to back of ready queue.")
