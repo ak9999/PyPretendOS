@@ -141,7 +141,7 @@ def complete_process(command, system):
     if command[0] == 'D':
         if int(command[1:]) > system.get_num_disks() - 1:
             print("Bad index. Remember we count from 0.")
-        elif not system.discs[int(command[1:])]:
+        elif not system.disks[int(command[1:])]:
             print("Nothing in queue!")
             return
         else:
