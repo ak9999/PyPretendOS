@@ -24,9 +24,14 @@ class ProcessControlBlock:
         self.rw = '-'
         self.filename = None
         self.file_length = 0
-        self.tau = None
         # This is the cylinder the data is on if PCB is going to disk.
         self.location = 0
+        # For timing.
+        self.num_bursts = 0
+        self.tau = None
+        self.total_cpu_time = 0
+        self.cpu_time = 0
+        self.time_at_termination = 0
         create_block(self)
 
     def get_pid(self):
@@ -93,6 +98,12 @@ class ProcessControlBlock:
         except (ValueError, EOFError):
             print("You must enter an integer.")
             self.set_cylinder()
+
+    def avg_burst(self):
+        if self.num_bursts > 0:
+            return self.total_cpu_time / self.num_bursts
+        else:
+            return 0
 
     def print_block(self):
         string = "{0}\t{1}\t{2}\t{3}\t{4}\t{5}".format(self.pid, self.memstart, self.rw, self.filename,
