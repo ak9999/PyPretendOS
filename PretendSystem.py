@@ -1,3 +1,4 @@
+# coding=utf-8
 """
 Author: Abdullah Khan
 File: PretendSystem.py
@@ -27,6 +28,10 @@ class PretendSystem:
         self.disks = list()
         self.discs = list()
         self.ready = RQ()
+        #  Initial burst estimate
+        self.init_tau = None
+        #  History parameter, alpha.
+        self.alpha = None
         #  System generation.
         self.sys_gen()  # Call sys_gen upon instantiation
 
@@ -76,7 +81,7 @@ class PretendSystem:
                 for _ in range(0, self.num_disks):
                     dq = DiskQueue()
                     dq.set_number(_)
-                    dq.set_cylinders(_)
+                    dq.set_num_cylinders(_)
                     self.disks.append(dq)
         except (ValueError, EOFError):
             print("Error, try again.")
