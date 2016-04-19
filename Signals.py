@@ -160,10 +160,10 @@ def complete_process(command, system):
         elif not system.printers[int(command[1:])]:
             print("Nothing in queue!")
         else:
-            process = system.discs[int(command[1:])].top()
+            process = system.printers[int(command[1:])].top()
             process.filename = None
             process.file_length = 0
-            process.rw = '-'
+            process.set_rw('-')
             system.ready.add(process)
             if system.printers[int(command[1:])].pop() is not False:
                 print("Process complete! Moved to back of ready queue.")
