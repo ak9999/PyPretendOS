@@ -45,7 +45,7 @@ def terminate(system):
 
 
 def arrival(system):
-    pcb = PCB()
+    pcb = PCB(system.alpha, system.init_tau)
     system.ready.add(pcb)
     return
 
