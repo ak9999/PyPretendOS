@@ -18,7 +18,7 @@ class ReadyQueue:
     def __init__(self):
         self.rq = deque()  # Just make a deque.
         self.cpu = deque(maxlen=1)
-        self.banner = (" " * 4).join(["PID", "MEM", "CPU Time", "AVG"])
+        self.banner = (" " * 4).join(["PID", "MEM", "CPU Time", "# Bursts", "AVG"])
 
     def queue_is_empty(self):
         if self.rq:
