@@ -129,6 +129,8 @@ class PretendSystem:
 
     def get_num_disks(self):
         return self.num_disks
+
+
     '''
     This is the sys_gen function, where I ask how many of each piece of hardware
     there is. For now I assume there is only ONE CPU.
@@ -141,6 +143,8 @@ class PretendSystem:
         self.set_num_printers()
         self.set_num_cdrw()
         self.print_available_hardware()
+        self.set_hist_param()
+        self.set_init_burst()
 
     """
     This is so we can easily print out the system details.
