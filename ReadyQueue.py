@@ -18,7 +18,7 @@ class ReadyQueue:
     def __init__(self):
         self.rq = deque()  # Just make a deque.
         self.cpu = deque(maxlen=1)
-        self.banner = (" " * 4).join(["PID", "MEM", "R/W", "Filename", "Length", "Location"])
+        self.banner = (" " * 4).join(["PID", "MEM", "CPU Time", "AVG"])
 
     def queue_is_empty(self):
         if self.rq:
@@ -65,11 +65,11 @@ class ReadyQueue:
             print(self.banner)
             print("CPU")
             try:
-                print(self.cpu[0].print_block())
+                print(self.cpu[0].print_ready_queue())
             except IndexError:
                 print(end='')
             print("Ready Queue")
             for pcb in self.rq:
-                pcb.print_block()
+                pcb.print_ready_queue()
         except AttributeError:
             traceback.print_exc()
