@@ -117,10 +117,12 @@ class ProcessControlBlock:
                 print("Error, try again.")
                 self.get_actual_burst()
             else:
+                self.pre()
                 self.total_cpu_time += time_t
                 self.num_bursts += 1
                 # (1 - alpha) * self.tau + alpha * time_t
                 self.tau = (1 - self.sys_alpha) * self.tau + self.sys_alpha * time_t
+                print("Current burst: ", self.total_cpu_time)
         except(EOFError, ValueError):
             print("Error, try again.")
             self.get_actual_burst()
@@ -129,8 +131,8 @@ class ProcessControlBlock:
         if self.preempt is True:
             print("Process preempted.", end=' ')
             self.preempt = False
-            self.total_cpu_time = self.tau
-            print("Current burst: ", self.total_cpu_time)
+            self.total_cpu_time += self.tau
+            #print("Current burst: ", self.total_cpu_time)
         else:
             pass
 

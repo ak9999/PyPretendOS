@@ -29,9 +29,9 @@ class PretendSystem:
         self.discs = list()
         self.ready = RQ()
         #  Initial burst estimate
-        self.init_tau = None
+        self.init_tau = 0
         #  History parameter, alpha.
-        self.alpha = None
+        self.alpha = 0
         #  System generation.
         self.sys_gen()  # Call sys_gen upon instantiation
 

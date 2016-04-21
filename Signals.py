@@ -8,6 +8,15 @@ import re
 from PCB import ProcessControlBlock as PCB
 
 
+def get_burst(system):
+    if system.ready.cpu:
+        try:
+            system.ready.cpu[0].get_actual_burst()
+        except IndexError:
+            pass
+    else:
+        pass
+
 def snapshot_mode(system):
     print("Valid inputs: c, d, p, r")
     while True:
@@ -64,6 +73,9 @@ def signal(letter, system):
     if letter in switch_case:
         #  Get function from the switch_case dictionary
         function = switch_case.get(letter)
+        # Every time a system call or interrupt comes in, we update the CPU time for current running process.
+        get_burst(system)
+        # Now move on to the actual system call or interrupt.
         return function(system)  # Return the function and execute it.
     else:
         pass
@@ -76,6 +88,7 @@ def send_to_device(command, system):
         elif int(command[1:]) > system.get_num_cdrw() - 1:
             print("Bad index. Remember we count from 0.")
         else:
+            get_burst(system)
             process = system.ready.cpu[0]
             system.discs[int(command[1:])].add_file_info(process)
             print("Is this a read or write?:", end=" ")
@@ -93,6 +106,7 @@ def send_to_device(command, system):
         elif int(command[1:]) > system.get_num_disks() - 1:
             print("Bad index. Remember we count from 0.")
         else:
+            get_burst(system)
             process = system.ready.cpu[0]
             system.disks[int(command[1:])].add_file_info(process)
             print("Is this a read or write?:", end=" ")
@@ -110,6 +124,7 @@ def send_to_device(command, system):
         elif int(command[1:]) > system.get_num_printers() - 1:
             print("Bad index. Remember we count from 0.")
         else:
+            get_burst(system)
             process = system.ready.cpu[0]
             system.printers[int(command[1:])].add_file_info(process)
             process.set_rw("w")
@@ -128,6 +143,7 @@ def complete_process(command, system):
             print("Nothing in queue!")
             return
         else:
+            get_burst(system)
             process = system.discs[int(command[1:])].top()
             # Set all the stuff back to default values.
             # CPU knows nothing of file sizes and read/write.
@@ -146,6 +162,7 @@ def complete_process(command, system):
             print("Nothing in queue!")
             return
         else:
+            get_burst(system)
             process = system.disks[int(command[1:])].top()
             # Set all the stuff back to default values.
             # CPU knows nothing of file sizes and cylinders.
@@ -164,6 +181,7 @@ def complete_process(command, system):
         elif not system.printers[int(command[1:])]:
             print("Nothing in queue!")
         else:
+            get_burst(system)
             process = system.printers[int(command[1:])].top()
             # Set all the stuff back to default values.
             # CPU knows nothing of file sizes and read/write.
