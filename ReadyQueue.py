@@ -5,6 +5,7 @@ Description: It's just a queue that will hold PCBs.
 """
 import traceback
 from collections import deque
+from PCB import ProcessControlBlock
 
 """
 Information about Python 3's deques (pronounced 'decks'):
@@ -39,6 +40,9 @@ class ReadyQueue:
     def add(self, other=None):
         if other is not None:
             self.rq.append(other)
+            #  Lambdas are great.
+            self.rq = deque(sorted(self.rq, key=lambda pcb: pcb.pid))
+            self.rq = deque(sorted(self.rq, key=lambda pcb: pcb.total_cpu_time))
         else:
             print("Nothing was added.")
         if self.cpu_process():
