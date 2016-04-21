@@ -41,7 +41,7 @@ class PretendSystem:
 
     def set_tau(self, num):
         try:
-            self.tau = num
+            self.init_tau = num
             return True
         except ValueError:
             return False

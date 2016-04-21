@@ -108,8 +108,17 @@ class ProcessControlBlock:
         else:
             return 0
 
+    def pre(self):
+        if self.preempt == True:
+            print("Process PID: {} preempted.".format(self.pid), end=' ')
+            self.preempt = False
+            self.total_cpu_time = self.tau
+            print("Current burst: ", self.total_cpu_time)
+        else:
+            pass
 
     def get_actual_burst(self):
+        self.pre()
         print("Enter actual CPU burst time: ", end='')
         try:
             time_t = int(input().strip())
@@ -117,8 +126,7 @@ class ProcessControlBlock:
                 print("Error, try again.")
                 self.get_actual_burst()
             else:
-                self.pre()
-                self.total_cpu_time += time_t
+                self.total_cpu_time -= time_t
                 self.num_bursts += 1
                 # (1 - alpha) * self.tau + alpha * time_t
                 self.tau = (1 - self.sys_alpha) * self.tau + self.sys_alpha * time_t
@@ -127,40 +135,34 @@ class ProcessControlBlock:
             print("Error, try again.")
             self.get_actual_burst()
 
-    def pre(self):
-        if self.preempt is True:
-            print("Process preempted.", end=' ')
-            self.preempt = False
-            self.total_cpu_time += self.tau
-            #print("Current burst: ", self.total_cpu_time)
-        else:
-            pass
-
     def print_block(self):
         string = "{0}\t{1}\t{2}\t{3}\t{4}\t{5}".format(self.pid, self.memstart, self.rw, self.filename,
                                                                  self.file_length, self.location,)
         print(string)
 
     def print_ready_queue(self):
-        string = "{0}\t{1}\t{2}\t{3}".format(str(self.pid).rjust(3),
+        string = "{0}\t{1}\t{2}\t{3}\t{4}".format(str(self.pid).rjust(3),
                                         str(self.memstart).rjust(3),
                                         str(self.total_cpu_time).rjust(8),
+                                        str(self.num_bursts).rjust(8),
                                         str(round(self.avg_burst, 2)).rjust(3),)
         print(string)
 
     def print_disk_queue(self):
-        string = "{0}\t{1}\t{2}\t{3}".format(str(self.pid).rjust(3),
+        string = "{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}".format(str(self.pid).rjust(3),
                                              str(self.memstart).rjust(3),
                                              str(self.total_cpu_time).rjust(8),
+                                             str(self.num_bursts).rjust(5),
                                              str(round(self.avg_burst, 2)).rjust(3),
                                              str(self.rw).rjust(2),
                                              str(self.location).rjust(8),)
         print(string)
 
     def print_device_queue(self):
-        string = "{0}\t{1}\t{2}\t{3}".format(str(self.pid).rjust(3),
+        string = "{0}\t{1}\t{2}\t{3}\t{4}\t{5}".format(str(self.pid).rjust(3),
                                              str(self.memstart).rjust(3),
                                              str(self.total_cpu_time).rjust(8),
+                                             str(self.num_bursts).rjust(8),
                                              str(round(self.avg_burst, 2)).rjust(3),
                                              str(self.rw).rjust(2),)
         print(string)
