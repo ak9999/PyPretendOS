@@ -17,7 +17,7 @@ available_address = 256
 
 
 class ProcessControlBlock:
-    def __init__(self):
+    def __init__(self, hist_parameter, init_tau):
         self.pid = None
         self.memstart = 0
         self.memend = 0
@@ -28,7 +28,8 @@ class ProcessControlBlock:
         self.location = 0
         # For timing.
         self.num_bursts = 0
-        self.tau = None
+        self.sys_alpha = hist_parameter  # Get this from the system.
+        self.tau = init_tau
         self.total_cpu_time = 0
         self.cpu_time = 0
         self.time_at_termination = 0
@@ -99,15 +100,40 @@ class ProcessControlBlock:
             print("You must enter an integer.")
             self.set_cylinder()
 
+    @property #  To treat avg_burst like a variable
     def avg_burst(self):
         if self.num_bursts > 0:
             return self.total_cpu_time / self.num_bursts
         else:
             return 0
 
+    def get_actual_burst(self):
+        print("Enter actual CPU burst time: ", end='')
+        try:
+            time_t = int(input().strip())
+            if time_t < 0:
+                print("Error, try again.")
+                self.get_actual_burst()
+            else:
+                self.total_cpu_time += time_t
+                self.num_bursts += 1
+                self.tau = None  # (1 - alpha) * self.tau + alpha * time_t
+        except(EOFError, ValueError):
+            print("Error, try again.")
+            self.get_actual_burst()
+
+
     def print_block(self):
         string = "{0}\t{1}\t{2}\t{3}\t{4}\t{5}".format(self.pid, self.memstart, self.rw, self.filename,
                                                                  self.file_length, self.location,)
+        print(string)
+
+
+    def print_ready_queue(self):
+        string = "{0}\t{1}\t{2}\t{3}".format(str(self.pid).rjust(3),
+                                        str(self.memstart).rjust(3),
+                                        str(self.total_cpu_time).rjust(8),
+                                        str(self.avg_burst).rjust(3),)
         print(string)
 
 def create_block(block):
