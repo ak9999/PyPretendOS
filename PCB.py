@@ -146,6 +146,24 @@ class ProcessControlBlock:
                                         str(round(self.avg_burst, 2)).rjust(3),)
         print(string)
 
+    def print_disk_queue(self):
+        string = "{0}\t{1}\t{2}\t{3}".format(str(self.pid).rjust(3),
+                                             str(self.memstart).rjust(3),
+                                             str(self.total_cpu_time).rjust(8),
+                                             str(round(self.avg_burst, 2)).rjust(3),
+                                             str(self.rw).rjust(2),
+                                             str(self.location).rjust(8),)
+        print(string)
+
+    def print_device_queue(self):
+        string = "{0}\t{1}\t{2}\t{3}".format(str(self.pid).rjust(3),
+                                             str(self.memstart).rjust(3),
+                                             str(self.total_cpu_time).rjust(8),
+                                             str(round(self.avg_burst, 2)).rjust(3),
+                                             str(self.rw).rjust(2),)
+        print(string)
+
+
 def create_block(block):
     block.set_pid()
     block.set_memstart()
