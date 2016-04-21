@@ -141,30 +141,30 @@ class ProcessControlBlock:
         print(string)
 
     def print_ready_queue(self):
-        string = "{0}\t{1}\t{2}\t{3}\t{4}".format(str(self.pid).rjust(3),
-                                        str(self.memstart).rjust(3),
-                                        str(self.total_cpu_time).rjust(8),
-                                        str(self.num_bursts).rjust(8),
-                                        str(round(self.avg_burst, 2)).rjust(3),)
-        print(string)
-
-    def print_disk_queue(self):
-        string = "{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}".format(str(self.pid).rjust(3),
-                                             str(self.memstart).rjust(3),
-                                             str(self.total_cpu_time).rjust(8),
-                                             str(self.num_bursts).rjust(5),
-                                             str(round(self.avg_burst, 2)).rjust(3),
-                                             str(self.rw).rjust(2),
-                                             str(self.location).rjust(8),)
+        string = "{0}\t{1}\t{2}\t{3}\t{4}".format(str(self.pid).ljust(3),
+                                        str(self.memstart).ljust(3),
+                                        str(self.total_cpu_time).ljust(8),
+                                        str(self.num_bursts).ljust(8),
+                                        str(round(self.avg_burst, 2)).ljust(3),)
         print(string)
 
     def print_device_queue(self):
-        string = "{0}\t{1}\t{2}\t{3}\t{4}\t{5}".format(str(self.pid).rjust(3),
-                                             str(self.memstart).rjust(3),
-                                             str(self.total_cpu_time).rjust(8),
-                                             str(self.num_bursts).rjust(8),
-                                             str(round(self.avg_burst, 2)).rjust(3),
-                                             str(self.rw).rjust(2),)
+        string = "{0}\t{1}\t{2}\t{3}\t{4}\t{5}".format(str(self.pid).ljust(3),
+                                             str(self.memstart).ljust(3),
+                                             str(self.rw).ljust(2),
+                                             str(self.total_cpu_time).ljust(8),
+                                             str(self.num_bursts).ljust(8),
+                                             str(round(self.avg_burst, 2)).ljust(3),)                                             
+        print(string)
+
+    def print_disk_queue(self):
+        string = "{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}".format(str(self.pid).ljust(3),
+                                             str(self.memstart).ljust(3),
+                                             str(self.rw).ljust(2),
+                                             str(self.location).ljust(8),
+                                             str(self.total_cpu_time).ljust(8),
+                                             str(self.num_bursts).ljust(5),
+                                             str(round(self.avg_burst, 2)).ljust(3),)                                          
         print(string)
 
 
