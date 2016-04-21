@@ -31,8 +31,8 @@ class ProcessControlBlock:
         self.sys_alpha = hist_parameter  # Get this from the system.
         self.tau = init_tau
         self.total_cpu_time = 0
-        self.cpu_time = 0
         self.time_at_termination = 0
+        self.preempt = True  # Flag set to true by default so we know whether to add init_tau to total_cpu_time
         create_block(self)
 
     def get_pid(self):
@@ -100,12 +100,14 @@ class ProcessControlBlock:
             print("You must enter an integer.")
             self.set_cylinder()
 
+
     @property #  To treat avg_burst like a variable
     def avg_burst(self):
         if self.num_bursts > 0:
             return self.total_cpu_time / self.num_bursts
         else:
             return 0
+
 
     def get_actual_burst(self):
         print("Enter actual CPU burst time: ", end='')
@@ -117,23 +119,31 @@ class ProcessControlBlock:
             else:
                 self.total_cpu_time += time_t
                 self.num_bursts += 1
-                self.tau = None  # (1 - alpha) * self.tau + alpha * time_t
+                # (1 - alpha) * self.tau + alpha * time_t
+                self.tau = (1 - self.sys_alpha) * self.tau + self.sys_alpha * time_t
         except(EOFError, ValueError):
             print("Error, try again.")
             self.get_actual_burst()
 
+    def pre(self):
+        if self.preempt is True:
+            print("Process preempted.", end=' ')
+            self.preempt = False
+            self.total_cpu_time = self.tau
+            print("Current burst: ", self.total_cpu_time)
+        else:
+            pass
 
     def print_block(self):
         string = "{0}\t{1}\t{2}\t{3}\t{4}\t{5}".format(self.pid, self.memstart, self.rw, self.filename,
                                                                  self.file_length, self.location,)
         print(string)
 
-
     def print_ready_queue(self):
         string = "{0}\t{1}\t{2}\t{3}".format(str(self.pid).rjust(3),
                                         str(self.memstart).rjust(3),
                                         str(self.total_cpu_time).rjust(8),
-                                        str(self.avg_burst).rjust(3),)
+                                        str(round(self.avg_burst, 2)).rjust(3),)
         print(string)
 
 def create_block(block):
