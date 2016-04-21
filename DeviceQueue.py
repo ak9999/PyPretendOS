@@ -13,12 +13,12 @@ This is the generic device queue that will be inherited by the actual devices.
 
 class DeviceQueue:
     # We need a banner at the top so we know what's going on.
-    self.banner = (" " * 4).join(["PID", "MEM", "", "CPU Time", "# Bursts", "AVG"])
 
     def __init__(self):
         self.q = deque()
         self.number = None
         self.device_name = None
+        self.banner = (" " * 4).join(["PID", "MEM", "R/W", "CPU Time", "# Bursts", "AVG"])
 
     def __bool__(self):
         """Implements truth testing to see whether the DeviceQueue has elements or not."""
@@ -60,11 +60,12 @@ class DeviceQueue:
             print("Failure: Nothing to remove.")
 
     def print_device_queue(self):
+        print(self.banner)
         if not self.q:
             print("Nothing in device queue.")
             return
         for block in self.q:
-            block.print_block()
+            block.print_device_queue()
 
 
 class DiscQueue(DeviceQueue):
@@ -78,6 +79,7 @@ class DiskQueue(DeviceQueue):
         self.device_name = "d"
         self.num_cylinders = None
         self.cylinders = deque(maxlen=self.num_cylinders)
+        self.banner = (" " * 4).join(["PID", "MEM", "R/W", "Cylinder", "CPU Time", "# Bursts", "AVG"])
 
     def set_num_cylinders(self, num):
         print("Disk " + str(num) + ": Enter number of disk cylinders:", end=' ')
@@ -104,6 +106,14 @@ class DiskQueue(DeviceQueue):
         else:
             print("That cylinder is not available.")
             self.add_file_info(block)
+
+    def print_device_queue(self):
+        print(self.banner)
+        if not self.q:
+            print("Nothing in device queue.")
+            return
+        for block in self.q:
+            block.print_disk_queue()
 
 
 class PrinterQueue(DeviceQueue):
