@@ -13,7 +13,7 @@ This is the generic device queue that will be inherited by the actual devices.
 
 class DeviceQueue:
     # We need a banner at the top so we know what's going on.
-    banner = (" "*4).join(["PID", "MEM", "R/W", "Length"])
+    self.banner = (" " * 4).join(["PID", "MEM", "", "CPU Time", "# Bursts", "AVG"])
 
     def __init__(self):
         self.q = deque()
