@@ -49,6 +49,11 @@ def snapshot(system):
 
 
 def terminate(system):
+    if system.ready.cpu:
+        try:
+            system.ready.cpu[0].complete()
+        except IndexError:
+            pass
     system.ready.remove()
     return
 
