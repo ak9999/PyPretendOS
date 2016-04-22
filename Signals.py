@@ -52,10 +52,10 @@ def terminate(system):
     if system.ready.cpu:
         try:
             system.ready.cpu[0].complete()
+            system.update_sys_avg(system.ready.cpu[0].total_cpu_time)
         except IndexError:
             pass
     system.ready.remove()
-    system.update_sys_avg()
     return
 
 
