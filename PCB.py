@@ -167,6 +167,10 @@ class ProcessControlBlock:
                                              str(round(self.avg_burst, 2)).ljust(3),)                                          
         print(string)
 
+    def complete(self):
+        print("Process PID: {0} terminating.".format(self.pid))
+        print("Total CPU time: {0}\tAvg. Burst time: {1}".format(self.total_cpu_time, round(self.avg_burst, 2)))
+
 
 def create_block(block):
     block.set_pid()
