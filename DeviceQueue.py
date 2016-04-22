@@ -18,7 +18,7 @@ class DeviceQueue:
         self.q = deque()
         self.number = None
         self.device_name = None
-        self.banner = (" " * 4).join(["PID", "MEM", "R/W", "CPU Time", "# Bursts", "AVG"])
+        self.banner = (" " * 4).join(["PID", "MEM", "R/W", "\tCPU Time", "# Bursts", "\tAVG"])
 
     def __bool__(self):
         """Implements truth testing to see whether the DeviceQueue has elements or not."""
@@ -79,7 +79,7 @@ class DiskQueue(DeviceQueue):
         self.device_name = "d"
         self.num_cylinders = None
         self.cylinders = deque(maxlen=self.num_cylinders)
-        self.banner = (" " * 4).join(["PID", "MEM", "R/W", "Cylinder", "CPU Time", "# Bursts", "AVG"])
+        self.banner = (" " * 4).join(["PID", "MEM", "R/W", "Cylinder", "\tCPU Time", "# Bursts", "AVG"])
 
     def set_num_cylinders(self, num):
         print("Disk " + str(num) + ": Enter number of disk cylinders:", end=' ')
