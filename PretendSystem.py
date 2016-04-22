@@ -32,6 +32,11 @@ class PretendSystem:
         self.init_tau = 0
         #  History parameter, alpha.
         self.alpha = 0
+        #  Number of completed (re: terminated) processes
+        self.terminated = 0
+        #  System Total CPU time of completed (re: terminated) processes
+        self.total_time = 0
+        self.sys_avg = 0
         #  System generation.
         self.sys_gen()  # Call sys_gen upon instantiation
 
@@ -162,3 +167,10 @@ class PretendSystem:
         for idx in range(len(device_list)):
             print("Device: " + device_list[idx].device_name + str(idx))
             device_list[idx].print_device_queue()
+
+    def update_sys_avg(self, num):
+        self.total_time += num
+        self.terminated += 1
+        self.sys_avg = self.total_time / self.terminated
+        print("System average total CPU time: {0}".format(round(self.sys_avg)))
+
