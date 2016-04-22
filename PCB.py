@@ -101,6 +101,10 @@ class ProcessControlBlock:
             print("You must enter an integer.")
             self.set_cylinder()
 
+    @property
+    def get_cylinder(self):
+        return self.location
+
 
     @property #  To treat avg_burst like a variable
     def avg_burst(self):
