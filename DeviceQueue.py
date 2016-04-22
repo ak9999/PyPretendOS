@@ -78,7 +78,6 @@ class DiskQueue(DeviceQueue):
         DeviceQueue.__init__(self)
         self.device_name = "d"
         self.num_cylinders = None
-        self.cylinders = deque(maxlen=self.num_cylinders)
         self.banner = (" " * 4).join(["PID", "MEM", "R/W", "Cylinder", "\tCPU Time", "# Bursts", "AVG"])
         #  We need a second queue for FSCAN.
         self.r = deque()
@@ -110,14 +109,9 @@ class DiskQueue(DeviceQueue):
         block.set_file_name()
         block.set_file_length()
         block.set_cylinder()
-        if block.location not in self.cylinders:
-            if block.location < self.num_cylinders:
-                self.cylinders.append(block.location)
-            else:
-                print("Exceeded limit.")
-                self.add_file_info(block)
-        else:
-            print("That cylinder is not available.")
+        if block.location >= self.num_cylinders:
+            print("There's only {0} cylinders. Try again. [0-{1}]".format(self.num_cylinders,
+                                                                          self.num_cylinders - 1))
             self.add_file_info(block)
 
     def print_device_queue(self):
@@ -129,7 +123,6 @@ class DiskQueue(DeviceQueue):
             print("Seek:")
             for block in self.q:
                 block.print_disk_queue()
-        
 
     def add(self, block):
         """Runs FSCAN to put the PCBs in order."""
