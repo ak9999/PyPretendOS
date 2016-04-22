@@ -31,6 +31,7 @@ class ProcessControlBlock:
         self.sys_alpha = hist_parameter  # Get this from the system.
         self.tau = init_tau
         self.total_cpu_time = 0
+        self.current_cpu_time = 0
         self.time_at_termination = 0
         self.preempt = True  # Flag set to true by default so we know whether to add init_tau to total_cpu_time
         create_block(self)
@@ -112,8 +113,9 @@ class ProcessControlBlock:
         if self.preempt == True:
             print("Process PID: {} preempted.".format(self.pid), end=' ')
             self.preempt = False
-            self.total_cpu_time = self.tau
-            print("Current burst: ", self.total_cpu_time)
+            self.total_cpu_time += self.tau
+            self.current_cpu_time += self.tau
+            print("Current burst: ", self.current_cpu_time)
         else:
             pass
 
@@ -126,11 +128,12 @@ class ProcessControlBlock:
                 print("Error, try again.")
                 self.get_actual_burst()
             else:
-                self.total_cpu_time -= time_t
+                self.total_cpu_time += time_t
+                self.current_cpu_time -= time_t
                 self.num_bursts += 1
                 # (1 - alpha) * self.tau + alpha * time_t
                 self.tau = (1 - self.sys_alpha) * self.tau + self.sys_alpha * time_t
-                print("Current burst: ", self.total_cpu_time)
+                print("Current burst: ", self.current_cpu_time)
         except(EOFError, ValueError):
             print("Error, try again.")
             self.get_actual_burst()
@@ -143,7 +146,7 @@ class ProcessControlBlock:
     def print_ready_queue(self):
         string = "{0}\t{1}\t{2}\t{3}\t{4}".format(str(self.pid).ljust(3),
                                         str(self.memstart).ljust(3),
-                                        str(self.total_cpu_time).ljust(8),
+                                        str(self.current_cpu_time).ljust(8),
                                         str(self.num_bursts).ljust(8),
                                         str(round(self.avg_burst, 2)).ljust(3),)
         print(string)
@@ -152,7 +155,7 @@ class ProcessControlBlock:
         string = "{0}\t{1}\t{2}\t{3}\t{4}\t{5}".format(str(self.pid).ljust(3),
                                              str(self.memstart).ljust(3),
                                              str(self.rw).ljust(2),
-                                             str(self.total_cpu_time).ljust(8),
+                                             str(self.current_cpu_time).ljust(8),
                                              str(self.num_bursts).ljust(8),
                                              str(round(self.avg_burst, 2)).ljust(3),)                                             
         print(string)
@@ -162,9 +165,9 @@ class ProcessControlBlock:
                                              str(self.memstart).ljust(3),
                                              str(self.rw).ljust(2),
                                              str(self.location).ljust(8),
-                                             str(self.total_cpu_time).ljust(8),
+                                             str(self.current_cpu_time).ljust(8),
                                              str(self.num_bursts).ljust(5),
-                                             str(round(self.avg_burst, 2)).ljust(3),)                                          
+                                             str(round(self.avg_burst, 2)).ljust(3),)
         print(string)
 
     def complete(self):
