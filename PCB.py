@@ -22,7 +22,7 @@ class ProcessControlBlock:
         self.memstart = 0
         self.memend = 0
         self.rw = '-'
-        self.filename = None
+        self.filename = ''
         self.file_length = 0
         # This is the cylinder the data is on if PCB is going to disk.
         self.location = 0
