@@ -97,6 +97,9 @@ class ProcessControlBlock:
         print("Enter cylinder:", end=' ')
         try:
             self.location = int(input())
+            if self.location < 0:
+                print("You can't have a negative amount of cylinders.")
+                self.set_cylinder()
         except (ValueError, EOFError):
             print("You must enter an integer.")
             self.set_cylinder()
@@ -161,7 +164,7 @@ class ProcessControlBlock:
                                              str(self.rw).ljust(2),
                                              str(self.current_cpu_time).ljust(8),
                                              str(self.num_bursts).ljust(8),
-                                             str(round(self.avg_burst, 2)).ljust(3),)                                             
+                                             str(round(self.avg_burst, 2)).ljust(3),)
         print(string)
 
     def print_disk_queue(self):
