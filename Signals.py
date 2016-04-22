@@ -55,6 +55,7 @@ def terminate(system):
         except IndexError:
             pass
     system.ready.remove()
+    system.update_sys_avg()
     return
 
 
