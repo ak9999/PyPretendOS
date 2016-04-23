@@ -127,6 +127,12 @@ class DiskQueue(DeviceQueue):
         # Now we do the same for requests behind the head.
         backward = [idx for idx in self.r if self.r[-1].get_cylinder < self.head]
         backward.sort(key=lambda pcb: pcb.pid)
+        '''
+        Sort in reverse this time because these should always go to the back of the queue.
+        When we reach the last job going towards the end of the disk, we should
+        begin handling the requests in reverse order. This is why I sort in
+        reverse.
+        '''
         backward.sort(key=lambda pcb: pcb.get_cylinder, reverse=True)
         # We can clear the requests queue now.
         self.r.clear()
