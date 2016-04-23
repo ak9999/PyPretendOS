@@ -149,10 +149,9 @@ class DiskQueue(DeviceQueue):
     def pop(self):
         if self.q:
             self.head = self.q[0].get_cylinder
-            finished = self.q.pop()
             if not self.q:
                 self.fscan_sort()
-            return finished
+            return self.q.pop()
 
 class PrinterQueue(DeviceQueue):
     def __init__(self):
