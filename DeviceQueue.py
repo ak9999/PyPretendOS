@@ -137,10 +137,8 @@ class DiskQueue(DeviceQueue):
 
     def add(self, block):
         self.r.append(block)
-        print("Success.")
         if not self.q:
             self.fscan_sort()
-            print("Queue empty, running fscan.")
 
     def pop(self):
         if self.q:
