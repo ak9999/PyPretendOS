@@ -169,15 +169,15 @@ def complete_process(command, system):
             return
         else:
             get_burst(system)
-            process = system.disks[int(command[1:])].top()
-            # Set all the stuff back to default values.
-            # CPU knows nothing of file sizes and cylinders.
-            process.filename = ''
-            process.file_length = 0
-            process.location = 0
-            process.set_rw('-')
-            system.ready.add(process)
-            if system.disks[int(command[1:])].pop() is not False:
+            process = system.disks[int(command[1:])].pop()
+            if process is not False:
+                # Set all the stuff back to default values.
+                # CPU knows nothing of file sizes and cylinders.
+                process.filename = ''
+                process.file_length = 0
+                process.location = 0
+                process.set_rw('-')
+                system.ready.add(process)
                 print("Process complete! Moved to back of ready queue.")
             else:
                 print("No process in queue!")
