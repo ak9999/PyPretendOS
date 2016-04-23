@@ -86,8 +86,8 @@ class DiskQueue(DeviceQueue):
         print("Disk " + str(num) + ": Enter number of disk cylinders:", end=' ')
         try:
             self.num_cylinders = int(input().strip())
-            if self.num_cylinders < 0:
-                print("Number of cylinders must be positive!")
+            if self.num_cylinders <= 0:
+                print("Number of cylinders must be greater than 0!")
                 self.set_num_cylinders(num)
         except (ValueError, EOFError):
             print("Error, try again.")
