@@ -65,7 +65,7 @@ class PretendSystem:
             self.set_init_burst()
 
     def set_hist_param(self):
-        print("Enter the history parameter (α, 0 ≤ α ≤ 1):", end=' ')
+        print("Enter the history parameter (alpha, 0 ≤ alpha ≤ 1):", end=' ')
         try:
             self.alpha = float(input().strip())
             if self.alpha > 1 or self.alpha < 0:
@@ -173,4 +173,3 @@ class PretendSystem:
         self.terminated += 1
         self.sys_avg = self.total_time / self.terminated
         print("System average total CPU time: {0}".format(round(self.sys_avg)))
-
