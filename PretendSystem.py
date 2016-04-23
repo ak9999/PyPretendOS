@@ -65,11 +65,11 @@ class PretendSystem:
             self.set_init_burst()
 
     def set_hist_param(self):
-        print("Enter the history parameter (alpha, 0 ≤ alpha ≤ 1):", end=' ')
+        print("Enter the history parameter (alpha, 0 <= alpha <= 1):", end=' ')
         try:
             self.alpha = float(input().strip())
             if self.alpha > 1 or self.alpha < 0:
-                print("The history parameter must be α, 0 ≤ α ≤ 1. Try again.")
+                print("The history parameter must be alpha, 0 <= alpha <= 1. Try again.")
                 self.set_hist_param()
         except (ValueError, EOFError):
             print("Error, try again.")
