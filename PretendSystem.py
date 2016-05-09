@@ -43,6 +43,8 @@ class PretendSystem:
         self.proc_max_size = 0
         # Page size.
         self.page_size = 0
+        # Number of pages
+        self.npages = 0
         # Job pool.
         self.job_pool = list()
         #  System generation.
@@ -66,6 +68,7 @@ class PretendSystem:
             if self.total_memory % self.page_size != 0:
                 print("Total memory must be a multiple of the page size!")
                 self.set_totalmem()
+            self.npages = self.total_memory // self.page_size
         except ValueError:
             print("You must have memory.")
             self.set_totalmem()
@@ -196,15 +199,26 @@ class PretendSystem:
         self.set_num_printers()
         self.set_num_cdrw()
         self.print_available_hardware()
+        # Added in project 2
+        print()
         self.set_hist_param()
         self.set_init_burst()
+        print()
+        # Added in project 3
         self.set_page_size()
         self.set_totalmem()
         self.set_proc_size()
+        print()
+        self.print_mem_info()
+        print()
 
     """
     This is so we can easily print out the system details.
     """
+    def print_mem_info(self):
+        print("Page size: " + str(self.page_size) + " word(s).")
+        print("Total memory: " + str(self.total_memory) + " word(s) or " + str(self.npages) + " page(s).")
+        print("Maximum process size is: " + str(self.proc_max_size) + " word(s).")
 
     def print_available_hardware(self):
         string = ""
