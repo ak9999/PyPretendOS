@@ -43,6 +43,7 @@ class DeviceQueue:
     def add_file_info(self, block):
         """Ask for additional attributes when moving process to DeviceQueue."""
         block.set_file_name()
+        block.set_memstart()
         block.set_file_length()
 
     def get_number(self):
