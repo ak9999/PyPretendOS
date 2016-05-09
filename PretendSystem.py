@@ -65,11 +65,11 @@ class PretendSystem:
             if self.total_memory < 1:
                 print("You must have memory.")
                 self.set_totalmem()
-            if self.total_memory % self.page_size != 0:
-                print("Total memory must be a multiple of the page size!")
-                self.set_totalmem()
+            # if self.total_memory % self.page_size != 0:
+            #     print("Total memory must be a multiple of the page size!")
+            #     self.set_totalmem()
             self.npages = self.total_memory // self.page_size
-        except ValueError, EOFError:
+        except (ValueError, EOFError):
             print("You must have memory.")
             self.set_totalmem()
 
@@ -80,7 +80,7 @@ class PretendSystem:
             if self.proc_max_size < 1:
                 print("Processes do use memory.")
                 self.set_proc_size()
-        except ValueError, EOFError:
+        except (ValueError, EOFError):
             print("Processes do use memory.")
             self.set_proc_size()
 
@@ -91,7 +91,7 @@ class PretendSystem:
             if self.power2(self.page_size) == False:
                 print("Page sizes must be a power of 2.")
                 self.set_page_size()
-        except ValueError, EOFError:
+        except (ValueError, EOFError):
             print("Page sizes must be a power of 2.")
             self.set_page_size()
 
