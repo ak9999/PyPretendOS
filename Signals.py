@@ -64,6 +64,10 @@ def terminate(system):
 
 def arrival(system):
     pcb = PCB(system.alpha, system.init_tau)
+    if pcb.get_size > system.proc_max_size or pcb.get_size > system.total_memory:
+        print("Process too large. Throwing it away.")
+        print("Max process size: {0}\nSystem total memory: {1}".format(system.proc_max_size, system.total_memory))
+        return
     system.ready.add(pcb)
     return
 
@@ -78,7 +82,6 @@ def signal(letter, system):
             "A": arrival,  # put PCB into ready queue
             "S": snapshot,
             "t": terminate
-            "K": pass  # Kill goes here.
         }
     if letter in switch_case:
         #  Get function from the switch_case dictionary
