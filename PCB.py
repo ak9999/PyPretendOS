@@ -34,6 +34,7 @@ class ProcessControlBlock:
         self.current_cpu_time = 0
         self.time_at_termination = 0
         self.preempt = True  # Flag set to true by default so we know whether to add init_tau to total_cpu_time
+        self.proc_size = 0
         create_block(self)
 
     def get_pid(self):
@@ -61,8 +62,18 @@ class ProcessControlBlock:
         return int(self.location)
 
     def set_memstart(self):
-        global available_address
-        self.memstart = available_address
+        #global available_address
+        #self.memstart = available_address
+        print("Enter the starting location in memory:", end=' ')
+        try:
+            # Python lets me change base so easily.
+            self.memstart = int(input().strip(), 16)
+            if self.memstart < 1:
+                print("Try again.")
+                self.set_memstart()
+        except ValueError:
+            print("Try again.")
+            self.set_memstart()
 
     def set_memend(self):
         self.memend = self.memstart
@@ -80,7 +91,7 @@ class ProcessControlBlock:
     def set_file_length(self):
         print("File length:", end=' ')
         try:
-            self.file_length = int(input())
+            self.file_length = int(input().strip())
         except (ValueError, EOFError):
             print("Error, try again.")
             self.set_file_length()
@@ -88,7 +99,7 @@ class ProcessControlBlock:
     def set_file_name(self):
         print("File name:", end=' ')
         try:
-            self.filename = input()
+            self.filename = input().strip()
         except EOFError:
             print("You must input a filename.")
             self.set_file_name()
@@ -181,9 +192,20 @@ class ProcessControlBlock:
         print("Process PID: {0} terminating.".format(self.pid))
         print("Total CPU time: {0}\tAvg. Burst time: {1}".format(self.total_cpu_time, round(self.avg_burst, 2)))
 
+    def set_size(self):
+        print("Process size:", end=' ')
+        try:
+            self.proc_size = int(input().strip())
+        except (ValueError, EOFError):
+            print("Error, try again.")
+            self.set_size()
+
+    def get_size(self):
+        return self.proc_size
+
 
 def create_block(block):
     block.set_pid()
-    block.set_memstart()
+    block.set_size()
     block.set_memend()
     return block
