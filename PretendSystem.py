@@ -37,12 +37,60 @@ class PretendSystem:
         #  System Total CPU time of completed (re: terminated) processes
         self.total_time = 0
         self.sys_avg = 0
+        # Total memory
+        self.total_memory = 0
+        # Max process size
+        self.proc_max_size = 0
+        # Page size.
+        self.page_size = 0
+        # Job pool.
+        self.job_pool = list()
         #  System generation.
         self.sys_gen()  # Call sys_gen upon instantiation
+
+    def power2(self, n):
+        '''Returns boolean value'''
+        return n != 0 and ((n & (n - 1)) == 0)
 
     """
     Setter methods.
     """
+
+    def set_totalmem(self):
+        try:
+            print("Enter the amount of total memory in words:", end=' ')
+            self.total_memory = int(input().strip())
+            if self.total_memory < 1:
+                print("You must have memory.")
+                self.set_totalmem()
+            if self.total_memory % self.page_size != 0:
+                print("Total memory must be a multiple of the page size!")
+                self.set_totalmem()
+        except ValueError:
+            print("You must have memory.")
+            self.set_totalmem()
+
+    def set_proc_size(self):
+        try:
+            print("Enter the maximum size of a process:", end=' ')
+            self.proc_max_size = int(input().strip())
+            if self.proc_max_size < 1:
+                print("Processes do use memory.")
+                self.set_proc_size()
+        except ValueError:
+            print("Processes do use memory.")
+            self.set_proc_size()
+
+    def set_page_size(self):
+        try:
+            print("Enter the size of pages:", end=' ')
+            self.page_size = int(input().strip())
+            if self.power2(self.page_size) == False:
+                print("Page sizes must be a power of 2.")
+                self.set_page_size()
+        except ValueError:
+            print("Page sizes must be a power of 2.")
+            self.set_page_size()
 
     def set_tau(self, num):
         try:
@@ -150,6 +198,9 @@ class PretendSystem:
         self.print_available_hardware()
         self.set_hist_param()
         self.set_init_burst()
+        self.set_page_size()
+        self.set_totalmem()
+        self.set_proc_size()
 
     """
     This is so we can easily print out the system details.
