@@ -162,8 +162,7 @@ class ProcessControlBlock:
         print(string)
 
     def print_ready_queue(self):
-        string = "{0}\t{1}\t{2}\t{3}\t{4}".format(str(self.pid).ljust(3),
-                                        str(self.memstart).ljust(3),
+        string = "{0}\t{1}\t{2}\t{3}".format(str(self.pid).ljust(3),
                                         str(self.current_cpu_time).ljust(8),
                                         str(self.num_bursts).ljust(8),
                                         str(round(self.avg_burst, 2)).ljust(3),)
@@ -200,6 +199,7 @@ class ProcessControlBlock:
             print("Error, try again.")
             self.set_size()
 
+    @property
     def get_size(self):
         return self.proc_size
 
