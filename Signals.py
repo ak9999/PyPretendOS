@@ -18,7 +18,7 @@ def get_burst(system):
         pass
 
 def snapshot_mode(system):
-    print("Valid inputs: c, d, p, r")
+    print("Valid inputs: c, d, j, m, p, r")
     while True:
         print("S-", end="")
         command = input()
@@ -36,6 +36,10 @@ def snapshot_mode(system):
             elif command[0] == "p":
                 system.print_device(system.printers)
                 return
+            elif command[0] == "j":
+                pass
+            elif command[0] == "m":
+                pass
             else:
                 print("Invalid option.")
                 return
@@ -46,7 +50,6 @@ def snapshot_mode(system):
 def snapshot(system):
     snapshot_mode(system)
     return
-
 
 def terminate(system):
     if system.ready.cpu:
@@ -75,6 +78,7 @@ def signal(letter, system):
             "A": arrival,  # put PCB into ready queue
             "S": snapshot,
             "t": terminate
+            "K": pass  # Kill goes here.
         }
     if letter in switch_case:
         #  Get function from the switch_case dictionary
@@ -210,7 +214,7 @@ def valid_signal(pattern):
     """
     Return whether the pattern is a valid signal
     """
-    return re.compile(r"^[AcdrStp]{1}$").match(pattern) is not None
+    return re.compile(r"^[AcdrStpK]{1}$").match(pattern) is not None
 
 
 def valid_device(pattern):
