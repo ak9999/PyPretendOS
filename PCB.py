@@ -157,7 +157,7 @@ class ProcessControlBlock:
             self.get_actual_burst()
 
     def print_block(self):
-        string = "{0}\t{1}\t{2}\t{3}\t{4}\t{5}".format(self.pid, self.memstart, self.rw, self.filename,
+        string = "{0}\t{1}\t{2}\t{3}\t{4}\t{5}".format(self.pid, hex(self.memstart), self.rw, self.filename,
                                                                  self.file_length, self.location,)
         print(string)
 
@@ -170,7 +170,7 @@ class ProcessControlBlock:
 
     def print_device_queue(self):
         string = "{0}\t{1}\t{2}\t{3}\t{4}\t{5}".format(str(self.pid).ljust(3),
-                                             str(self.memstart).ljust(3),
+                                             str(hex(self.memstart)).ljust(3),
                                              str(self.rw).ljust(2),
                                              str(self.current_cpu_time).ljust(8),
                                              str(self.num_bursts).ljust(8),
@@ -179,7 +179,7 @@ class ProcessControlBlock:
 
     def print_disk_queue(self):
         string = "{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}".format(str(self.pid).ljust(3),
-                                             str(self.memstart).ljust(3),
+                                             str(hex(self.memstart)).ljust(3),
                                              str(self.rw).ljust(2),
                                              str(self.location).ljust(8),
                                              str(self.current_cpu_time).ljust(8),
