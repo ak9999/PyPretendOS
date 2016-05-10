@@ -61,6 +61,51 @@ def terminate(system):
     system.ready.remove()
     return
 
+def kill(system):
+    print("Enter PID of process to kill:", end=' ')
+    try:
+        pid = int(input().strip())
+        if pid < 1:
+            print("Can't have PIDs less than 1!")
+            return
+        # Start searching for PCB to kill in the queues.
+        for block in system.ready.cpu: #  Check in CPU.
+            if pid == block.pid:
+                del system.ready.cpu[0]
+                print("Killed process with PID {}".format(pid))
+                return
+        for idx in range(len(system.ready.rq)): # Check Ready Queue.
+            if pid == system.ready.rq[idx].pid:
+                del system.ready.rq[idx]
+                print("Killed process with PID {}".format(pid))
+                return
+        for printer in range(len(system.printers)):
+            for idx in range(len(system.printers[printer].q)):
+                if pid == system.printers[printer].q[idx].pid:
+                    del system.printers[printer].q[idx]
+                    print("Killed process with PID {}".format(pid))
+                    return
+        for disc in range(len(system.discs)):
+            for idx in range(len(system.discs[disc].q)):
+                if pid == system.discs[disc].q[idx].pid:
+                    del system.discs[disc].q[idx]
+                    print("Killed process with PID {}".format(pid))
+                    return
+        for disk in range(len(system.disks)):
+            for idx in range(len(system.disks[disk].q)):
+                if pid == system.disks[disk].q[idx].pid:
+                    del system.disks[disk].q[idx].pid
+                    print("Killed process with PID {}".format(pid))
+                    return
+            for idx in range(len(system.disks[disk].r)):
+                if pid == system.disks[disk].r[idx].pid:
+                    del system.disks[disk].r[idx].pid
+                    print("Killed process with PID {}".format(pid))
+                    return
+    except ValueError:
+        print("Bad input.")
+    except AttributeError:
+        print("Error.")
 
 def arrival(system):
     pcb = PCB(system.alpha, system.init_tau)
@@ -71,7 +116,6 @@ def arrival(system):
     system.ready.add(pcb)
     return
 
-
 def signal(letter, system):
     """
     Python does not have switch/cases like C++, but we can
@@ -81,7 +125,8 @@ def signal(letter, system):
         {
             "A": arrival,  # put PCB into ready queue
             "S": snapshot,
-            "t": terminate
+            "t": terminate,
+            "K": kill
         }
     if letter in switch_case:
         #  Get function from the switch_case dictionary
