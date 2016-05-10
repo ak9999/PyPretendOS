@@ -1,9 +1,16 @@
 Author: Abdullah Khan
-Assignment 2
+Assignment 3
 
 How to run this program:
 python3.4 __main__.py
 or python3.3 __main__.py if running in the Linux Lab.
+
+New:
+* Added kill command.
+
+Broken/absent:
+* Frame list.
+* Page table.
 
 On every system call or interrupt, if there is a process in the CPU,
 the timer (you) will have to say how long that process was using the CPU.
