@@ -94,12 +94,12 @@ def kill(system):
         for disk in range(len(system.disks)):
             for idx in range(len(system.disks[disk].q)):
                 if pid == system.disks[disk].q[idx].pid:
-                    del system.disks[disk].q[idx].pid
+                    del system.disks[disk].q[idx]
                     print("Killed process with PID {}".format(pid))
                     return
             for idx in range(len(system.disks[disk].r)):
                 if pid == system.disks[disk].r[idx].pid:
-                    del system.disks[disk].r[idx].pid
+                    del system.disks[disk].r[idx]
                     print("Killed process with PID {}".format(pid))
                     return
     except ValueError:
