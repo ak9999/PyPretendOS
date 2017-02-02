@@ -1,9 +1,10 @@
+# PyPretendOS
 Author: Abdullah Khan
-Assignment 3
+
+Purpose: Try to implement a "pretend" operating system, in Python.
 
 How to run this program:
-python3.4 __main__.py
-or python3.3 __main__.py if running in the Linux Lab.
+`python3 __main__.py`
 
 New:
 * Added kill command.
